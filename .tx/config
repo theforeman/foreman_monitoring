@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[foreman.foreman_monitoring]
+file_filter = locale/<lang>/foreman_monitoring.po
+source_file = locale/foreman_monitoring.pot
+source_lang = en
+type = PO

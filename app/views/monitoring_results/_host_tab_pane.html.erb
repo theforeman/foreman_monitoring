@@ -1,0 +1,25 @@
+<div class="tab-pane" id="monitoring">
+<% if @host.monitoring_results.any? %>
+  <table class="table table-bordered table-striped">
+    <thead
+      <tr>
+        <th colspan="2">Monitoring</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @host.monitoring_results.order(:service).each do |result| %>
+        <tr>
+          <td>
+            <%= result.service %>
+          </td>
+          <td>
+            <span class="<%= host_monitoring_result_icon_class(result.status) %>" title="<%= result.to_label %>"></span> <%= result.to_full_label %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-success"> <%= _('No monitoring results for this host') %> </div>
+<% end %>
+</div>

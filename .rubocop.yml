@@ -1,0 +1,58 @@
+inherit_from:
+  - .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'doc/plugins/**'
+
+# Don't enforce documentation
+Style/Documentation:
+  Enabled: false
+
+# Force before_filter until upgrade to Rails 4
+Rails/ActionFilter:
+  EnforcedStyle: filter
+
+Metrics/MethodLength:
+  Max: 40
+
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 500
+
+Style/FileName:
+  Exclude:
+      - 'db/seeds.d/*'
+
+Style/WordArray:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+# Support both ruby19 and hash_rockets
+Style/HashSyntax:
+  Enabled: false
+  SupportedStyles:
+    - ruby19
+    - hash_rockets
+
+Metrics/LineLength:
+  Max: 125
