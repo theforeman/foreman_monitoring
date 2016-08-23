@@ -1,3 +1,5 @@
+require 'deface'
+
 module ForemanMonitoring
   class Engine < ::Rails::Engine
     engine_name 'foreman_monitoring'
