@@ -5,7 +5,7 @@ module ForemanMonitoring
       before_destroy :downtime_host_destroy
       after_build :downtime_host_build
 
-      has_many :monitoring_results, :foreign_key => 'host_id'
+      has_many :monitoring_results, :dependent => :destroy, :foreign_key => 'host_id'
     end
 
     def monitoring_status(options = {})
