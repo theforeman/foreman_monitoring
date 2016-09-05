@@ -31,6 +31,9 @@ module ForemanMonitoring
     initializer 'foreman_monitoring.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_monitoring do
         requires_foreman '>= 1.11'
+
+        apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
+
         register_custom_status HostStatus::MonitoringStatus
       end
     end

@@ -6,6 +6,14 @@ module Api
 
       add_smart_proxy_filters :create, :features => 'Monitoring'
 
+      api :POST, '/monitoring_results', N_('Import monitoring result')
+      param :host, String, :desc => N_('FQDN of the host that the results are for'), :required => true
+      param :service, String, :desc => N_('Name of the service the results belong to'), :required => true
+      param :timestamp, String, :desc => N_('Timestamp of the results')
+      param :acknowledged, [true, false], :desc => N_('Is the result acknowledged?')
+      param :downtime, [true, false], :desc => N_('Is the result in downtime?')
+      param :result, [0, 1, 2, 3], :desc => N_('State of the monitoring result (0 -> ok, 1 -> warning, 2 -> critical, 3 -> unknown)')
+
       def create
         begin
           MonitoringResult.import(monitoring_result_params.with_indifferent_access)
