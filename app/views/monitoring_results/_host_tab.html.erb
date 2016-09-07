@@ -1,1 +1,3 @@
+<%- if authorized_for(:permission => 'view_monitoring_results', :auth_object => @host) -%>
 <li><a href="#monitoring" data-toggle="tab"><%= _("Monitoring") %></a></li>
+<%- end -%>

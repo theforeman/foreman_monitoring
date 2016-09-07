@@ -1,3 +1,4 @@
+<%- if authorized_for(:permission => 'view_monitoring_results', :auth_object => @host) -%>
 <div class="tab-pane" id="monitoring">
 <% if @host.monitoring_results.any? %>
   <table class="table table-bordered table-striped">
@@ -23,3 +24,4 @@
   <div class="alert alert-success"> <%= _('No monitoring results for this host') %> </div>
 <% end %>
 </div>
+<%- end -%>

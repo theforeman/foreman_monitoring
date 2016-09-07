@@ -1,0 +1,22 @@
+<div id="set_host_downtime" class="modal fade hide">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <%= alert_close('modal') %>
+      <h4 class="modal-title"><%= _('Set host downtime for %s') % @host %></h4>
+    </div>
+    <div class="modal-body">
+      <%= form_for :downtime,
+        :method => :put,
+        :url    => hash_for_downtime_host_path(:id => @host).merge(:auth_object => @host, :permission => 'build_hosts') do |f| %>
+        <%= text_f f, :comment, :size => "col-md-5", :label => _('Comment'), :help_inline => _('Short description that explains why the downtime was set.'), :required => true %>
+        <%= datetime_f f, :starttime, :size => "col-md-5", :label => _('Starttime'), :help_inline => _('Time when the downtime should start.'), :value => DateTime.now.strftime("%Y-%m-%dT%H:%M"), :required => true %>
+        <%= datetime_f f, :endtime, :size => "col-md-5", :label => _('Endtime'), :help_inline => _('Time when the downtime should end.'), :value => DateTime.now.advance(:hours => 2).strftime("%Y-%m-%dT%H:%M"), :required => true %>
+        <div class="modal-footer">
+          <%= modal_close %>
+          <%= f.submit(_("Set downtime"), :class => "btn btn-success submit") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

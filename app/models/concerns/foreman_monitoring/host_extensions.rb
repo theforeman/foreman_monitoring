@@ -38,5 +38,9 @@ module ForemanMonitoring
       end
       errors.empty?
     end
+
+    def monitored?
+      monitoring_results.any?
+    end
   end
 end

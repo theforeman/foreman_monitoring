@@ -2,18 +2,29 @@ module ForemanMonitoring
   module HostsHelperExt
     extend ActiveSupport::Concern
 
-    # included do
-    #  alias_method_chain :host_title_actions, :monitoring
-    # end
+    included do
+      alias_method_chain :host_title_actions, :monitoring
+    end
 
-    # def host_title_actions_with_monitoring(host)
-    #  title_actions(
-    #    button_group(
-    #      link_to(_('Monitoring'), monitoring_show_host_path(host), :target => '_blank', :class => 'btn btn-default')
-    #    )
-    #  )
-    #  host_title_actions_without_monitoring(host)
-    # end
+    def host_title_actions_with_monitoring(host)
+      title_actions(
+        button_group(
+          display_link_if_authorized(_('Downtime'),
+                                     hash_for_host_path(:id => host).merge(:auth_object => host,
+                                                                           :permission => :manage_host_downtimes,
+                                                                           :anchor => 'set_host_downtime'),
+                                     :class => 'btn btn-default',
+                                     :disabled => !host.monitored?,
+                                     :title    => _('Set a downtime for this host'),
+                                     :id       => 'host-downtime',
+                                     :data     => { :toggle => 'modal',
+                                                    :target => '#set_host_downtime'
+                                                  }
+                                    )
+        )
+      )
+      host_title_actions_without_monitoring(host)
+    end
 
     def host_monitoring_result_icon_class(result)
       icon_class = case result
@@ -40,6 +51,13 @@ module ForemanMonitoring
         'status-error'
       else
         'status-question'
+      end
+    end
+
+    def datetime_f(f, attr, options = {})
+      field(f, attr, options) do
+        addClass options, 'form-control'
+        f.datetime_local_field attr, options
       end
     end
   end

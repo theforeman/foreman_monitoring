@@ -7,4 +7,14 @@ Rails.application.routes.draw do
       resources :monitoring_results, :only => [:create]
     end
   end
+
+  scope '/monitoring' do
+    constraints(:id => %r{[^\/]+}) do
+      resources :hosts, :only => [] do
+        member do
+          put 'downtime'
+        end
+      end
+    end
+  end
 end

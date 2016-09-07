@@ -34,14 +34,27 @@ module ForemanMonitoring
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 
+        security_block :foreman_monitoring do
+          permission :view_monitoring_results,
+            {},
+            :resource_type => 'Host'
+          permission :manage_host_downtimes,
+            { :hosts => [:downtime] },
+            :resource_type => 'Host'
+        end
+
+        role 'Monitoring viewer', [:view_monitoring_results]
+        role 'Monitoring manager', [:view_monitoring_results, :manage_host_downtimes]
+
         register_custom_status HostStatus::MonitoringStatus
       end
     end
 
     config.to_prepare do
       begin
-        Host::Managed.send :include, ForemanMonitoring::HostExtensions
-        HostsHelper.send(:include, ForemanMonitoring::HostsHelperExt)
+        ::Host::Managed.send :include, ForemanMonitoring::HostExtensions
+        ::HostsHelper.send(:include, ForemanMonitoring::HostsHelperExt)
+        ::HostsController.send :include, ForemanMonitoring::HostsControllerExtensions
       rescue => e
         Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
       end
