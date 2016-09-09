@@ -14,6 +14,10 @@ Rails.application.routes.draw do
         member do
           put 'downtime'
         end
+        collection do
+          get :select_multiple_downtime
+          post :update_multiple_downtime
+        end
       end
     end
   end

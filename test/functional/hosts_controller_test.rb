@@ -59,4 +59,35 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_equal 'Invalid start/endtime for downtime!', flash[:error]
     end
   end
+
+  describe 'setting a downtime on multiple hosts' do
+    before do
+      @hosts = FactoryGirl.create_list(:host, 2, :with_puppet)
+      @hosts.each do |host|
+        FactoryGirl.create(:monitoring_result, :ok, :host => host)
+      end
+      @request.env['HTTP_REFERER'] = hosts_path
+    end
+
+    test 'should set a downtime' do
+      Host::Managed.any_instance.expects(:downtime_host).twice.returns(true)
+      params = {
+        :host_ids => @hosts.map(&:id),
+        :downtime => {
+          :comment => 'Maintenance work.',
+          :starttime => DateTime.now,
+          :endtime => DateTime.now
+        }
+      }
+
+      post :update_multiple_downtime, params,
+        set_session_user
+
+      assert_response :found
+      assert_redirected_to hosts_path
+      assert_nil flash[:error]
+      assert_not_nil flash[:notice]
+      assert_equal "A downtime was set for the selected hosts.", flash[:notice]
+    end
+  end
 end

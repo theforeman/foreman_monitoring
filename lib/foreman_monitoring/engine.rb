@@ -39,7 +39,7 @@ module ForemanMonitoring
             {},
             :resource_type => 'Host'
           permission :manage_host_downtimes,
-            { :hosts => [:downtime] },
+            { :hosts => [:downtime, :select_multiple_downtime, :update_multiple_downtime] },
             :resource_type => 'Host'
         end
 

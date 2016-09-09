@@ -4,6 +4,12 @@ module ForemanMonitoring
 
     included do
       alias_method_chain :host_title_actions, :monitoring
+      alias_method_chain :multiple_actions, :monitoring
+    end
+
+    def multiple_actions_with_monitoring
+      return multiple_actions_without_monitoring unless authorized_for(:controller => :hosts, :action => :select_multiple_downtime)
+      multiple_actions_without_monitoring + [[_('Set downtime'), select_multiple_downtime_hosts_path]]
     end
 
     def host_title_actions_with_monitoring(host)

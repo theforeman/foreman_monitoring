@@ -1,0 +1,5 @@
+<%= render 'selected_hosts', :hosts => @hosts %>
+
+<%= form_for :downtime, :url => update_multiple_downtime_hosts_path(:host_ids => params[:host_ids]) do |f| %>
+  <%= render :partial => 'downtime_fields', :locals => { :f => f } %>
+<% end %>
