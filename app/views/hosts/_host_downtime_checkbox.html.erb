@@ -1,0 +1,8 @@
+<% if authorized_for(:controller => :hosts, :action => :select_multiple_downtime) %>
+  <%= checkbox_f f, :set_downtime, {
+    :label_size => 'col-md-6',
+    :help_inline => _('Set a downtime for this host')
+  },
+  'true',
+  'false' %>
+<% end %>

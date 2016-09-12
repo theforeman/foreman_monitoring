@@ -10,6 +10,7 @@ module ForemanMonitoring
 
       alias_method :find_resource_with_monitoring, :find_resource
       alias_method :find_multiple_with_monitoring, :find_multiple
+      alias_method_chain :update_multiple_power_state, :monitoring
     end
 
     def downtime
@@ -51,6 +52,29 @@ module ForemanMonitoring
                  failed_hosts.count) % failed_hosts.map { |h, err| "#{h} (#{err})" }.to_sentence
       end
       redirect_back_or_to hosts_path
+    end
+
+    def update_multiple_power_state_with_monitoring
+      options = {
+        :comment => 'Power state changed in Foreman',
+        :author => "Foreman User #{User.current}",
+        :start_time => DateTime.now.to_time.to_i,
+        :end_time => DateTime.now.advance(:minutes => 30).to_time.to_i
+      }
+      if authorized_for(:controller => :hosts, :action => :select_multiple_downtime) && params[:power][:set_downtime]
+        @hosts.each do |host|
+          unless host.monitored?
+            logger.debug "Not setting a downtime for #{host} as it is not monitored."
+            next
+          end
+          if host.downtime_host(options)
+            logger.debug "Set a host downtime for #{host}."
+          else
+            logger.error "Failed to set a host downtime for #{host}: #{host.errors.full_messages.to_sentence}"
+          end
+        end
+      end
+      update_multiple_power_state_without_monitoring
     end
 
     private

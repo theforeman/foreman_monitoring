@@ -11,7 +11,7 @@ Style/Documentation:
 
 # Force before_filter until upgrade to Rails 4
 Rails/ActionFilter:
-  EnforcedStyle: filter
+  EnforcedStyle: action
 
 Metrics/MethodLength:
   Max: 40
@@ -56,3 +56,8 @@ Style/HashSyntax:
 
 Metrics/LineLength:
   Max: 125
+
+# Offense count: 21
+# Configuration parameters: CountComments.
+Metrics/ModuleLength:
+    Max: 400

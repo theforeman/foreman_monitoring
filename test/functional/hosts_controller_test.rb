@@ -81,13 +81,67 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       }
 
       post :update_multiple_downtime, params,
-        set_session_user
+           set_session_user
 
       assert_response :found
       assert_redirected_to hosts_path
       assert_nil flash[:error]
       assert_not_nil flash[:notice]
-      assert_equal "A downtime was set for the selected hosts.", flash[:notice]
+      assert_equal 'A downtime was set for the selected hosts.', flash[:notice]
+    end
+  end
+
+  describe 'changing the power state on multiple hosts' do
+    before do
+      @hosts = FactoryGirl.create_list(:host, 2, :with_puppet)
+      @hosts.each do |host|
+        FactoryGirl.create(:monitoring_result, :ok, :host => host)
+      end
+      @request.env['HTTP_REFERER'] = hosts_path
+
+      power_mock = mock('power')
+      power_mock.expects(:poweroff).twice
+      Host::Managed.any_instance.stubs(:power).returns(power_mock)
+    end
+
+    test 'should set a downtime if selected' do
+      Host::Managed.any_instance.expects(:downtime_host).twice.returns(true)
+      params = {
+        :host_ids => @hosts.map(&:id),
+        :power => {
+          :action => 'poweroff',
+          :set_downtime => true
+        }
+      }
+
+      post :update_multiple_power_state, params,
+           set_session_user
+
+      assert_response :found
+      assert_redirected_to hosts_path
+      assert_nil flash[:error]
+      assert_not_nil flash[:notice]
+      assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:notice]
+    end
+
+    test 'should not set a downtime if not selected' do
+      Host::Managed.any_instance.expects(:downtime_host).never
+      params = {
+        :host_ids => @hosts.map(&:id),
+        :power => {
+          :action => 'poweroff',
+          :set_downtime => false
+        }
+      }
+
+      post :update_multiple_power_state, params,
+           set_session_user
+
+      assert_response :found
+      assert_redirected_to hosts_path
+      assert_nil flash[:error]
+      assert_not_nil flash[:notice]
+      assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:notice]
     end
   end
 end
