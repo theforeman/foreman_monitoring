@@ -47,6 +47,10 @@ module ForemanMonitoring
         role 'Monitoring manager', [:view_monitoring_results, :manage_host_downtimes]
 
         register_custom_status HostStatus::MonitoringStatus
+
+        if respond_to?(:add_controller_action_scope)
+          add_controller_action_scope(HostsController, :index) { |base_scope| base_scope.includes(:monitoring_results) }
+        end
       end
     end
 
