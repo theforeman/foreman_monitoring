@@ -2,8 +2,8 @@ class Monitoring
   delegate :logger, :to => :Rails
   attr_reader :proxy, :proxy_api
 
-  def initialize
-    @proxy = SmartProxy.with_features('Monitoring').first
+  def initialize(opts)
+    @proxy = opts.fetch(:monitoring_proxy)
     @proxy_api = ProxyAPI::Monitoring.new(:url => proxy.url)
   end
 

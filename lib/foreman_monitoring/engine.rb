@@ -30,7 +30,7 @@ module ForemanMonitoring
 
     initializer 'foreman_monitoring.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_monitoring do
-        requires_foreman '>= 1.11'
+        requires_foreman '>= 1.14'
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 
@@ -53,12 +53,24 @@ module ForemanMonitoring
         if respond_to?(:add_controller_action_scope)
           add_controller_action_scope(HostsController, :index) { |base_scope| base_scope.includes(:monitoring_results) }
         end
+
+        monitoring_proxy_options = {
+          :feature => 'Monitoring',
+          :label => N_('Monitoring Proxy'),
+          :description => N_('Monitoring Proxy to use to manage monitoring of this host'),
+          :api_description => N_('ID of Monitoring Proxy to use to manage monitoring of this host')
+        }
+
+        # add monitoring smart proxy to hosts and hostgroups
+        smart_proxy_for Host::Managed, :monitoring_proxy, monitoring_proxy_options
+        smart_proxy_for Hostgroup, :monitoring_proxy, monitoring_proxy_options
       end
     end
 
     config.to_prepare do
       begin
         ::Host::Managed.send :include, ForemanMonitoring::HostExtensions
+        ::Hostgroup.send :include, ForemanMonitoring::HostgroupExtensions
         ::HostsHelper.send(:include, ForemanMonitoring::HostsHelperExt)
         ::HostsController.send :include, ForemanMonitoring::HostsControllerExtensions
       rescue => e
