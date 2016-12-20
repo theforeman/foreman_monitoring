@@ -1,5 +1,11 @@
 FactoryGirl.modify do
   factory :host do
+    trait :with_monitoring do
+      monitoring_proxy do
+        FactoryGirl.create(:smart_proxy, :monitoring)
+      end
+    end
+
     trait :with_monitoring_results do
       transient do
         monitoring_result_count 20
