@@ -41,10 +41,12 @@ module ForemanMonitoring
           permission :manage_host_downtimes,
             { :hosts => [:downtime, :select_multiple_downtime, :update_multiple_downtime] },
             :resource_type => 'Host'
+          permission :upload_monitoring_results,
+            :'api/v2/monitoring_results' => [:create]
         end
 
         role 'Monitoring viewer', [:view_monitoring_results]
-        role 'Monitoring manager', [:view_monitoring_results, :manage_host_downtimes]
+        role 'Monitoring manager', [:view_monitoring_results, :manage_host_downtimes, :upload_monitoring_results]
 
         register_custom_status HostStatus::MonitoringStatus
 
