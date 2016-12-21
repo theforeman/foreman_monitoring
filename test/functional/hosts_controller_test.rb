@@ -93,7 +93,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
   describe 'changing the power state on multiple hosts' do
     before do
-      @hosts = FactoryGirl.create_list(:host, 2, :with_puppet)
+      @hosts = FactoryGirl.create_list(:host, 2)
       @hosts.each do |host|
         FactoryGirl.create(:monitoring_result, :ok, :host => host)
       end
@@ -102,6 +102,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       power_mock = mock('power')
       power_mock.expects(:poweroff).twice
       Host::Managed.any_instance.stubs(:power).returns(power_mock)
+      Host::Managed.any_instance.stubs(:supports_power?).returns(true)
     end
 
     test 'should set a downtime if selected' do
