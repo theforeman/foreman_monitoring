@@ -61,7 +61,7 @@ module ForemanMonitoring
         :start_time => DateTime.now.to_time.to_i,
         :end_time => DateTime.now.advance(:minutes => 30).to_time.to_i
       }
-      if authorized_for(:controller => :hosts, :action => :select_multiple_downtime) && params[:power][:set_downtime]
+      if User.current.allowed_to?(:controller => :hosts, :action => :select_multiple_downtime) && params[:power][:set_downtime]
         @hosts.each do |host|
           unless host.monitored?
             logger.debug "Not setting a downtime for #{host} as it is not monitored."
