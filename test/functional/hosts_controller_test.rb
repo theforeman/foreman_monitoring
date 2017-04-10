@@ -4,6 +4,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
   tests ::HostsController
   setup do
     User.current = users(:admin)
+    disable_monitoring_orchestration
     @host = FactoryGirl.create(:host, :managed)
   end
 

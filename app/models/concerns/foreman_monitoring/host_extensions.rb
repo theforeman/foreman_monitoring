@@ -2,7 +2,8 @@ module ForemanMonitoring
   module HostExtensions
     extend ActiveSupport::Concern
     included do
-      before_destroy :downtime_host_destroy
+      include Orchestration::Monitoring
+
       after_build :downtime_host_build
 
       alias_method_chain :smart_proxy_ids, :monitoring_proxy
@@ -27,14 +28,9 @@ module ForemanMonitoring
       downtime_host(:comment => _('Host rebuilt in Foreman'))
     end
 
-    def downtime_host_destroy
-      downtime_host(:comment => _('Host deleted in Foreman'))
-    end
-
     def downtime_host(options)
       return unless monitored?
       begin
-        monitoring = Monitoring.new(:monitoring_proxy => monitoring_proxy)
         monitoring.set_downtime_host(self, options)
       rescue ProxyAPI::ProxyException => e
         errors.add(:base, _("Error setting downtime: '%s'") % e.message)
@@ -47,7 +43,7 @@ module ForemanMonitoring
     end
 
     def hostgroup_inherited_attributes_with_monitoring
-      hostgroup_inherited_attributes_without_monitoring + [:monitoring_proxy_id]
+      hostgroup_inherited_attributes_without_monitoring + ['monitoring_proxy_id']
     end
 
     def smart_proxy_ids_with_monitoring_proxy
@@ -56,6 +52,19 @@ module ForemanMonitoring
         ids << proxy.id
       end
       ids
+    end
+
+    def monitoring_attributes
+      {
+        :ip => ip,
+        :ip6 => ip6
+      }
+    end
+
+    private
+
+    def monitoring
+      Monitoring.new(:monitoring_proxy => monitoring_proxy)
     end
   end
 end
