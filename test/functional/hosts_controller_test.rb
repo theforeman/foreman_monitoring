@@ -67,6 +67,13 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       @request.env['HTTP_REFERER'] = hosts_path
     end
 
+    test 'show a host selection' do
+      host_ids = @hosts.map(&:id)
+      xhr :post, :select_multiple_downtime, {:host_ids => host_ids}, set_session_user
+      assert_response :success
+      assert response.body =~ /#{@hosts.first.name}.*#{@hosts.last.name}/m
+    end
+
     test 'should set a downtime' do
       Host::Managed.any_instance.expects(:downtime_host).twice.returns(true)
       params = {
