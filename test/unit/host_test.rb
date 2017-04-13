@@ -53,10 +53,11 @@ class HostTest < ActiveSupport::TestCase
       end
 
       test 'should not queue monitoring update' do
-        fake_host_query_result = host.monitoring_attributes
-        ProxyAPI::Monitoring.any_instance.stubs(:query_host).returns(fake_host_query_result)
+        ProxyAPI::Monitoring.any_instance.stubs(:query_host).returns({})
         host.save
         host.queue.clear
+        fake_host_query_result = host.monitoring_attributes
+        ProxyAPI::Monitoring.any_instance.stubs(:query_host).returns(fake_host_query_result)
         assert_valid host
         tasks = host.queue.all.map(&:name)
         assert_equal [], tasks

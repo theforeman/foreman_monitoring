@@ -57,7 +57,19 @@ module ForemanMonitoring
     def monitoring_attributes
       {
         :ip => ip,
-        :ip6 => ip6
+        :ip6 => ip6,
+        :architecture => architecture.try(:name),
+        :os => operatingsystem.try(:to_label),
+        :osfamily => operatingsystem.try(:family),
+        :virtual => provider != 'BareMetal',
+        :provider => provider,
+        :compute_resource => compute_resource.try(:to_label),
+        :hostgroup => hostgroup.try(:to_label),
+        :organization => organization.try(:name),
+        :location => organization.try(:name),
+        :comment => comment,
+        :environment => environment.try(:to_s),
+        :owner_name => owner.try(:name)
       }
     end
 

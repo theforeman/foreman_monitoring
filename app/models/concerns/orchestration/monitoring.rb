@@ -89,6 +89,7 @@ module Orchestration::Monitoring
   end
 
   def monitoring_update_required?(actual_attrs, desired_attrs)
+    return true if actual_attrs.deep_symbolize_keys.keys != desired_attrs.deep_symbolize_keys.keys
     actual_attrs.deep_symbolize_keys.merge(desired_attrs.deep_symbolize_keys) do |k, actual_v, desired_v|
       if actual_v.is_a?(Hash) && desired_v.is_a?(Hash)
         return true if monitoring_update_required?(actual_v, desired_v)
@@ -98,6 +99,7 @@ module Orchestration::Monitoring
       end
       desired_v
     end
+    Rails.logger.debug "No monitoring update required."
     false
   end
 end
