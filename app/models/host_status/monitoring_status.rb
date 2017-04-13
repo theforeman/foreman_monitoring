@@ -6,7 +6,7 @@ module HostStatus
     UNKNOWN = 3
 
     def relevant?(_options = {})
-      host_not_in_build? && host_known_in_monitoring?
+      host_not_in_build? && host.monitored? && host_known_in_monitoring?
     end
 
     def to_status(_options = {})
@@ -57,6 +57,10 @@ module HostStatus
 
     def host_known_in_monitoring?
       host.monitoring_results.any?
+    end
+
+    def host_monitored?
+      host.monitored?
     end
 
     def should_affect_global_status?

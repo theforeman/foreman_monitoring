@@ -3,9 +3,10 @@ require 'test_plugin_helper'
 class MonitoringStatusTest < ActiveSupport::TestCase
   setup do
     setup_settings
+    disable_monitoring_orchestration
   end
 
-  let(:host) { FactoryGirl.create(:host) }
+  let(:host) { FactoryGirl.create(:host, :with_monitoring) }
   let(:status) { HostStatus::MonitoringStatus.new(:host => host) }
 
   context 'status changes' do
@@ -53,7 +54,7 @@ class MonitoringStatusTest < ActiveSupport::TestCase
   end
 
   context 'status with host with monitoring results' do
-    let(:host) { FactoryGirl.create(:host, :with_monitoring_results) }
+    let(:host) { FactoryGirl.create(:host, :with_monitoring, :with_monitoring_results) }
 
     test '#relevant? is only for hosts not in build mode' do
       host.build = false
@@ -65,6 +66,10 @@ class MonitoringStatusTest < ActiveSupport::TestCase
 
     test '#host_known_in_monitoring? should be true' do
       assert status.host_known_in_monitoring?
+    end
+
+    test '#host_monitored? should be true' do
+      assert status.host_monitored?
     end
   end
 
