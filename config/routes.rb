@@ -17,6 +17,8 @@ Rails.application.routes.draw do
         collection do
           post :select_multiple_downtime
           post :update_multiple_downtime
+          post :select_multiple_monitoring_proxy
+          post :update_multiple_monitoring_proxy
         end
       end
     end

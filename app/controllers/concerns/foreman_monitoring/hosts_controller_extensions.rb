@@ -4,9 +4,11 @@ module ForemanMonitoring
 
     included do
       before_action :find_resource_with_monitoring, :only => [:downtime]
-      before_action :find_multiple_with_monitoring, :only => [:select_multiple_downtime, :update_multiple_downtime]
+      before_action :find_multiple_with_monitoring, :only => [:select_multiple_downtime, :update_multiple_downtime,
+                                                              :select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy]
       before_action :validate_host_downtime_params, :only => [:downtime]
       before_action :validate_hosts_downtime_params, :only => [:update_multiple_downtime]
+      before_action :validate_multiple_monitoring_proxy, :only => :update_multiple_monitoring_proxy
 
       alias_method :find_resource_with_monitoring, :find_resource
       alias_method :find_multiple_with_monitoring, :find_multiple
@@ -52,6 +54,17 @@ module ForemanMonitoring
                  failed_hosts.count) % failed_hosts.map { |h, err| "#{h} (#{err})" }.to_sentence
       end
       redirect_back_or_to hosts_path
+    end
+
+    def validate_multiple_monitoring_proxy
+      validate_multiple_proxy(select_multiple_monitoring_proxy_hosts_path)
+    end
+
+    def select_multiple_monitoring_proxy
+    end
+
+    def update_multiple_monitoring_proxy
+      update_multiple_proxy(_('Monitoring'), :monitoring_proxy=)
     end
 
     def update_multiple_power_state_with_monitoring
@@ -116,7 +129,8 @@ module ForemanMonitoring
 
     def action_permission
       case params[:action]
-      when 'downtime', 'select_multiple_downtime', 'update_multiple_downtime'
+      when 'downtime', 'select_multiple_downtime', 'update_multiple_downtime',
+        'select_multiple_monitoring_proxy', 'update_multiple_monitoring_proxy'
         :downtime
       else
         super

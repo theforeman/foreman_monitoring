@@ -147,4 +147,44 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:notice]
     end
   end
+
+  describe 'changing the monitoring proxy of multiple hosts' do
+    let(:hosts) { FactoryGirl.create_list(:host, 2, :with_monitoring) }
+    let(:monitoring_proxy) { FactoryGirl.create(:smart_proxy, :monitoring, :organizations => [hosts.first.organization], :locations => [hosts.first.location]) }
+    before do
+      @request.env['HTTP_REFERER'] = hosts_path
+    end
+
+    test 'show a host selection' do
+      host_ids = hosts.map(&:id)
+      xhr :post, :select_multiple_monitoring_proxy, {:host_ids => host_ids}, set_session_user
+      assert_response :success
+      assert response.body =~ /#{hosts.first.name}.*#{hosts.last.name}/m
+    end
+
+    test 'should change the proxy' do
+      hosts.each do |host|
+        refute_equal monitoring_proxy, host.monitoring_proxy
+      end
+
+      params = {
+        :host_ids => hosts.map(&:id),
+        :proxy => { :proxy_id => monitoring_proxy.id }
+      }
+
+      post :update_multiple_monitoring_proxy, params,
+           set_session_user
+
+      assert_response :found
+      assert_redirected_to hosts_path
+      assert_nil flash[:error]
+      assert_equal "The Monitoring proxy of the selected hosts was set to #{monitoring_proxy.name}.", flash[:notice]
+
+      hosts.each do |host|
+        as_admin do
+          assert_equal monitoring_proxy, host.reload.monitoring_proxy
+        end
+      end
+    end
+  end
 end

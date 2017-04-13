@@ -9,7 +9,7 @@ module ForemanMonitoring
 
     def multiple_actions_with_monitoring
       return multiple_actions_without_monitoring unless authorized_for(:controller => :hosts, :action => :select_multiple_downtime)
-      multiple_actions_without_monitoring + [[_('Set downtime'), select_multiple_downtime_hosts_path]]
+      multiple_actions_without_monitoring + [[_('Set downtime'), select_multiple_downtime_hosts_path], [_('Change Monitoring Proxy'), select_multiple_monitoring_proxy_hosts_path]]
     end
 
     def host_title_actions_with_monitoring(host)
