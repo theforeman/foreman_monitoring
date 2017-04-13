@@ -1,4 +1,4 @@
-<%- if authorized_for(:permission => 'view_monitoring_results', :auth_object => @host) -%>
+<%- if authorized_for(:permission => 'view_monitoring_results', :auth_object => @host) && @host.monitored? -%>
 <div class="tab-pane" id="monitoring">
 <% if @host.monitoring_results.any? %>
   <table class="table table-bordered table-striped">
