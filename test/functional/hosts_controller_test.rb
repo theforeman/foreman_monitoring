@@ -19,8 +19,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         :id => @host.name,
         :downtime => {
           :comment => 'Maintenance work.',
-          :starttime => DateTime.now,
-          :endtime => DateTime.now
+          :starttime => Time.current,
+          :endtime => Time.current.advance(:hours => 2)
         }
       }, set_session_user
       assert_response :found
@@ -59,6 +59,18 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_not_nil flash[:error]
       assert_equal 'Invalid start/endtime for downtime!', flash[:error]
     end
+
+    test 'should parse the times in the correct time zone' do
+      User.current.update_attribute(:timezone, 'Berlin')
+      Host::Managed.any_instance.expects(:downtime_host).with(has_entries(:start_time => 1492676100, :end_time => 1492683300))
+      put :downtime, {
+        :id => @host.name,
+        :downtime => {
+          :comment => 'Maintenance work.',
+          :starttime => '2017-04-20T10:15',
+          :endtime => '2017-04-20T12:15' }
+      }, set_session_user
+    end
   end
 
   describe 'setting a downtime on multiple hosts' do
@@ -80,8 +92,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         :host_ids => @hosts.map(&:id),
         :downtime => {
           :comment => 'Maintenance work.',
-          :starttime => DateTime.now,
-          :endtime => DateTime.now
+          :starttime => Time.current,
+          :endtime => Time.current.advance(:hours => 2)
         }
       }
 

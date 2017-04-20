@@ -71,8 +71,8 @@ module ForemanMonitoring
       options = {
         :comment => 'Power state changed in Foreman',
         :author => "Foreman User #{User.current}",
-        :start_time => DateTime.now.to_time.to_i,
-        :end_time => DateTime.now.advance(:minutes => 30).to_time.to_i
+        :start_time => Time.current.to_i,
+        :end_time => Time.current.advance(:minutes => 30).to_i
       }
       if User.current.allowed_to?(:controller => :hosts, :action => :select_multiple_downtime) && params[:power][:set_downtime]
         @hosts.each do |host|
@@ -96,8 +96,8 @@ module ForemanMonitoring
       {
         :comment => params[:downtime][:comment],
         :author => "Foreman User #{User.current}",
-        :start_time => DateTime.parse(params[:downtime][:starttime]).to_time.to_i,
-        :end_time => DateTime.parse(params[:downtime][:endtime]).to_time.to_i
+        :start_time => Time.zone.parse(params[:downtime][:starttime]).to_i,
+        :end_time => Time.zone.parse(params[:downtime][:endtime]).to_i
       }
     end
 
@@ -118,13 +118,13 @@ module ForemanMonitoring
         process_error(:redirect => redirect_url, :error_msg => 'No start/endtime for downtime!')
         return false
       end
-      begin
-        DateTime.parse(params[:downtime][:starttime])
-        DateTime.parse(params[:downtime][:endtime])
-      rescue ArgumentError
+      starttime = Time.zone.parse(params[:downtime][:starttime])
+      endtime = Time.zone.parse(params[:downtime][:endtime])
+      if starttime.nil? || endtime.nil? || starttime >= endtime
         process_error(:redirect => redirect_url, :error_msg => 'Invalid start/endtime for downtime!')
         return false
       end
+      true
     end
 
     def action_permission
