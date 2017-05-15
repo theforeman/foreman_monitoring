@@ -171,7 +171,9 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       host_ids = hosts.map(&:id)
       xhr :post, :select_multiple_monitoring_proxy, {:host_ids => host_ids}, set_session_user
       assert_response :success
-      assert response.body =~ /#{hosts.first.name}.*#{hosts.last.name}/m
+      hosts.each do |host|
+        assert response.body =~ /#{host.name}/m
+      end
     end
 
     test 'should change the proxy' do
@@ -190,7 +192,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_response :found
       assert_redirected_to hosts_path
       assert_nil flash[:error]
-      assert_equal "The Monitoring proxy of the selected hosts was set to #{monitoring_proxy.name}.", flash[:notice]
+      assert_equal "The Monitoring proxy of the selected hosts was set to #{monitoring_proxy.name}", flash[:notice]
 
       hosts.each do |host|
         as_admin do
