@@ -19,6 +19,15 @@ RPM users can install the `tfm-rubygem-foreman_monitoring` package.
 
 This plug-in has not been packaged for Debian, yet.
 
+If using the gem as installation source database enhancement and service restart must
+be done manually.
+
+```
+foreman-rake db:migrate
+foreman-rake db:seed
+touch ~foreman/tmp/restart.txt
+```
+
 # Usage
 
 For managing a host in the monitoring solution a Smart Proxy providing
@@ -36,6 +45,14 @@ panel. You can configure if the sub-status should affect the global status.
 
 Furthermore it allows to individually set a downtime at the host detail view
 or as a bulk action from the host overview.
+
+# Troubleshooting
+
+Logging entries relevant to the plug-in will be located in the Foreman's log
+which is by default `/var/log/foreman/production.log`.
+
+Also check the troubleshooting section of the Smart Proxy plug-in if problems
+occure in the underlying communication.
 
 ## Contributing
 
