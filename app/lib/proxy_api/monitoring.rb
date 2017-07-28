@@ -43,7 +43,7 @@ module ProxyAPI
     rescue RestClient::ResourceNotFound
       nil
     rescue => e
-      raise ProxyException.new(url, e, N_('Unable to query monitoring host object for %s') % host)
+      raise ProxyException.new(url, e, N_('Unable to query monitoring host object for %{host}: %{message}') % { :host => host, :message => e.try(:response) || e.try(:message) })
     end
   end
 end
