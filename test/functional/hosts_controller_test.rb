@@ -83,7 +83,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       host_ids = @hosts.map(&:id)
       xhr :post, :select_multiple_downtime, {:host_ids => host_ids}, set_session_user
       assert_response :success
-      assert response.body =~ /#{@hosts.first.name}.*#{@hosts.last.name}/m
+      assert_includes response.body, @hosts.first.name
+      assert_includes response.body, @hosts.last.name
     end
 
     test 'should set a downtime' do
