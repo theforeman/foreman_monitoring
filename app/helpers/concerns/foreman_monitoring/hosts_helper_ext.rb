@@ -24,9 +24,7 @@ module ForemanMonitoring
                                      :title    => _('Set a downtime for this host'),
                                      :id       => 'host-downtime',
                                      :data     => { :toggle => 'modal',
-                                                    :target => '#set_host_downtime'
-                                                  }
-                                    )
+                                                    :target => '#set_host_downtime' })
         )
       )
       host_title_actions_without_monitoring(host)

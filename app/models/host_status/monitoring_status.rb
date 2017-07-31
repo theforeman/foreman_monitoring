@@ -70,7 +70,7 @@ module HostStatus
     private
 
     def grouped_results
-      host.monitoring_results.group([:result, :downtime, :acknowledged]).count
+      host.monitoring_results.group(%i[result downtime acknowledged]).count
     end
   end
 end

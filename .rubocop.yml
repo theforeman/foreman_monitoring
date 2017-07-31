@@ -55,9 +55,13 @@ Style/HashSyntax:
     - hash_rockets
 
 Metrics/LineLength:
-  Max: 125
+  Max: 190
 
 # Offense count: 21
 # Configuration parameters: CountComments.
 Metrics/ModuleLength:
     Max: 400
+
+Style/MethodName:
+  Exclude:
+    - 'app/models/concerns/orchestration/monitoring.rb'

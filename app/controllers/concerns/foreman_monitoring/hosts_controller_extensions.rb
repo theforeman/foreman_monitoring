@@ -4,8 +4,8 @@ module ForemanMonitoring
 
     included do
       before_action :find_resource_with_monitoring, :only => [:downtime]
-      before_action :find_multiple_with_monitoring, :only => [:select_multiple_downtime, :update_multiple_downtime,
-                                                              :select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy]
+      before_action :find_multiple_with_monitoring, :only => %i[select_multiple_downtime update_multiple_downtime
+                                                                select_multiple_monitoring_proxy update_multiple_monitoring_proxy]
       before_action :validate_host_downtime_params, :only => [:downtime]
       before_action :validate_hosts_downtime_params, :only => [:update_multiple_downtime]
       before_action :validate_multiple_monitoring_proxy, :only => :update_multiple_monitoring_proxy
@@ -20,11 +20,10 @@ module ForemanMonitoring
         process_error(:redirect => host_path, :error_msg => @host.errors.full_messages.to_sentence)
         return false
       end
-      process_success :success_msg => _('Created downtime for %s') % (@host), :success_redirect => :back
+      process_success :success_msg => _('Created downtime for %s') % @host, :success_redirect => :back
     end
 
-    def select_multiple_downtime
-    end
+    def select_multiple_downtime; end
 
     def update_multiple_downtime
       failed_hosts = {}
@@ -60,8 +59,7 @@ module ForemanMonitoring
       validate_multiple_proxy(select_multiple_monitoring_proxy_hosts_path)
     end
 
-    def select_multiple_monitoring_proxy
-    end
+    def select_multiple_monitoring_proxy; end
 
     def update_multiple_monitoring_proxy
       update_multiple_proxy(_('Monitoring'), :monitoring_proxy=)

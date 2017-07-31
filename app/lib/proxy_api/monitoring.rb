@@ -18,19 +18,19 @@ module ProxyAPI
     end
 
     def create_host(host, attributes = {})
-      parse(put({:attributes => attributes}, "host/#{host}"))
+      parse(put({ :attributes => attributes }, "host/#{host}"))
     rescue => e
       raise ProxyException.new(url, e, N_('Unable to create monitoring host object for %s') % host)
     end
 
     def update_host(host, attributes = {})
-      parse(post({:attributes => attributes}, "host/#{host}"))
+      parse(post({ :attributes => attributes }, "host/#{host}"))
     rescue => e
       raise ProxyException.new(url, e, N_('Unable to update monitoring host object for %s') % host)
     end
 
     def delete_host(host)
-      raise Foreman::Exception.new('Missing hostname.') if host.blank?
+      raise Foreman::Exception, 'Missing hostname.' if host.blank?
       parse(delete("host/#{host}"))
     rescue RestClient::ResourceNotFound
       true

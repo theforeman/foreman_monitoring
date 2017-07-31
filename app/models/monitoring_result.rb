@@ -1,5 +1,5 @@
 class MonitoringResult < ActiveRecord::Base
-  enum :result => [:ok, :warning, :critical, :unknown]
+  enum :result => %i[ok warning critical unknown]
 
   belongs_to_host
 

@@ -27,13 +27,13 @@ class ProxyApiDhcpTest < ActiveSupport::TestCase
   end
 
   test 'create_host should do put' do
-    @monitoring.expects(:put).with({:attributes => {:ip => '1.1.1.1'}}, 'host/example.com').
+    @monitoring.expects(:put).with({ :attributes => { :ip => '1.1.1.1' } }, 'host/example.com').
       returns(fake_rest_client_response({ 'result' => {} }))
     assert_equal({ 'result' => {} }, @monitoring.create_host('example.com', :ip => '1.1.1.1'))
   end
 
   test 'update_host should do post' do
-    @monitoring.expects(:post).with({:attributes => {:ip => '1.1.1.1'}}, 'host/example.com').
+    @monitoring.expects(:post).with({ :attributes => { :ip => '1.1.1.1' } }, 'host/example.com').
       returns(fake_rest_client_response({ 'result' => {} }))
     assert_equal({ 'result' => {} }, @monitoring.update_host('example.com', :ip => '1.1.1.1'))
   end

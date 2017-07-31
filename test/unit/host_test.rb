@@ -41,7 +41,7 @@ class HostTest < ActiveSupport::TestCase
       test 'should queue monitoring update' do
         fake_host_query_result = {
           'ip' => '1.1.1.1',
-          'ip6' => '2001:db8::1',
+          'ip6' => '2001:db8::1'
         }
         ProxyAPI::Monitoring.any_instance.stubs(:query_host).returns(fake_host_query_result)
         host.save
@@ -78,7 +78,6 @@ class HostTest < ActiveSupport::TestCase
         Setting[:monitoring_create_action] = 'none'
         Setting[:monitoring_delete_action] = 'downtime'
       end
-
 
       test 'should not queue monitoring create actions' do
         assert_valid host

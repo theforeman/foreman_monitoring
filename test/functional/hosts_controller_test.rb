@@ -52,7 +52,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         :downtime => {
           :comment => 'Maintenance work.',
           :starttime => 'invalid',
-          :endtime => 'invalid' }
+          :endtime => 'invalid'
+        }
       }, set_session_user
       assert_response :found
       assert_redirected_to host_path(:id => @host)
@@ -62,13 +63,14 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'should parse the times in the correct time zone' do
       User.current.update_attribute(:timezone, 'Berlin')
-      Host::Managed.any_instance.expects(:downtime_host).with(has_entries(:start_time => 1492676100, :end_time => 1492683300))
+      Host::Managed.any_instance.expects(:downtime_host).with(has_entries(:start_time => 1_492_676_100, :end_time => 1_492_683_300))
       put :downtime, {
         :id => @host.name,
         :downtime => {
           :comment => 'Maintenance work.',
           :starttime => '2017-04-20T10:15',
-          :endtime => '2017-04-20T12:15' }
+          :endtime => '2017-04-20T12:15'
+        }
       }, set_session_user
     end
   end
@@ -81,7 +83,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'show a host selection' do
       host_ids = @hosts.map(&:id)
-      xhr :post, :select_multiple_downtime, {:host_ids => host_ids}, set_session_user
+      xhr :post, :select_multiple_downtime, { :host_ids => host_ids }, set_session_user
       assert_response :success
       assert_includes response.body, @hosts.first.name
       assert_includes response.body, @hosts.last.name
@@ -170,7 +172,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'show a host selection' do
       host_ids = hosts.map(&:id)
-      xhr :post, :select_multiple_monitoring_proxy, {:host_ids => host_ids}, set_session_user
+      xhr :post, :select_multiple_monitoring_proxy, { :host_ids => host_ids }, set_session_user
       assert_response :success
       hosts.each do |host|
         assert response.body =~ /#{host.name}/m

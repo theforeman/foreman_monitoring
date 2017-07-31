@@ -12,7 +12,8 @@ module Api
       param :timestamp, String, :desc => N_('Timestamp of the results')
       param :acknowledged, [true, false], :desc => N_('Is the result acknowledged?')
       param :downtime, [true, false], :desc => N_('Is the result in downtime?')
-      param :result, [0, 1, 2, 3], :desc => N_('State of the monitoring result (0 -> ok, 1 -> warning, 2 -> critical, 3 -> unknown)')
+      param :result, [0, 1, 2, 3],
+            :desc => N_('State of the monitoring result (0 -> ok, 1 -> warning, 2 -> critical, 3 -> unknown)')
 
       def create
         begin
