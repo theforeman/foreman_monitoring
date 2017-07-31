@@ -5,6 +5,9 @@ class HostsControllerExtensionsTest < ActionController::TestCase
   setup do
     User.current = users(:admin)
     disable_monitoring_orchestration
+    ProxyAPI::Monitoring.stubs(:create_host).returns(true)
+    ProxyAPI::Monitoring.stubs(:update_host).returns(true)
+    ProxyAPI::Monitoring.stubs(:delete_host).returns(true)
     @host = FactoryGirl.create(:host, :managed)
   end
 
