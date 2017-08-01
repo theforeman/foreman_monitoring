@@ -34,12 +34,16 @@ module ForemanMonitoring
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 
+        security_block :hosts do
+          permission :edit_hosts, { :hosts => [:select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy] }
+        end
+
         security_block :foreman_monitoring do
           permission :view_monitoring_results,
             {},
             :resource_type => 'Host'
           permission :manage_host_downtimes,
-            { :hosts => %i[downtime select_multiple_downtime update_multiple_downtime] },
+            { :hosts => [:downtime, :select_multiple_downtime, :update_multiple_downtime] },
             :resource_type => 'Host'
           permission :upload_monitoring_results,
             :'api/v2/monitoring_results' => [:create]

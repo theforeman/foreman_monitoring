@@ -65,3 +65,6 @@ Metrics/ModuleLength:
 Style/MethodName:
   Exclude:
     - 'app/models/concerns/orchestration/monitoring.rb'
+
+Style/SymbolArray:
+  Enabled: false
