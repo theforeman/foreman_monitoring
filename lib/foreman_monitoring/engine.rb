@@ -34,10 +34,6 @@ module ForemanMonitoring
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 
-        security_block :hosts do
-          permission :edit_hosts, { :hosts => [:select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy] }
-        end
-
         security_block :foreman_monitoring do
           permission :view_monitoring_results,
             {},
@@ -47,6 +43,9 @@ module ForemanMonitoring
             :resource_type => 'Host'
           permission :upload_monitoring_results,
             :'api/v2/monitoring_results' => [:create]
+          permission :edit_hosts,
+            { :hosts => [:select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy] },
+            :resource_type => 'Host'
         end
 
         role 'Monitoring viewer', [:view_monitoring_results]
