@@ -49,7 +49,7 @@ module ForemanMonitoring
         end
 
         role 'Monitoring viewer', [:view_monitoring_results]
-        role 'Monitoring manager', %i[view_monitoring_results manage_host_downtimes upload_monitoring_results]
+        role 'Monitoring manager', [:view_monitoring_results, :manage_host_downtimes]
 
         register_custom_status HostStatus::MonitoringStatus
 
