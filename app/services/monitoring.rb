@@ -27,23 +27,22 @@ class Monitoring
   end
 
   def set_downtime_host(host, options = {})
-    proxy_api.create_host_downtime(host.fqdn, default_downtime_options.merge(options))
+    proxy_api.create_host_downtime(host.name, default_downtime_options.merge(options))
   end
 
   def del_downtime_host(host, options = {})
-    proxy_api.remove_host_downtime(host.fqdn, default_downtime_options.merge(options))
+    proxy_api.remove_host_downtime(host.name, default_downtime_options.merge(options))
   end
 
   def create_host(host)
-    proxy_api.create_host(host.fqdn, host.monitoring_attributes)
+    proxy_api.create_host(host.name, host.monitoring_attributes)
   end
 
   def update_host(host)
-    proxy_api.update_host(host.fqdn, host.monitoring_attributes)
+    proxy_api.update_host(host.name, host.monitoring_attributes)
   end
 
   def delete_host(host)
-    # We cannot use host.fqdn here as that is delegated to primary interface that does not exist anymore
     proxy_api.delete_host(host.name)
   end
 
