@@ -93,6 +93,14 @@ class HostTest < ActiveSupport::TestCase
         assert_includes tasks, "Set monitoring downtime for #{host}"
         assert_equal 1, tasks.size
       end
+
+      test 'should set downtime on delete with correct hostname' do
+        assert host.save
+        host.queue.clear
+        host.stubs(:skip_orchestration?).returns(false) # Enable orchestration
+        ProxyAPI::Monitoring.any_instance.expects(:create_host_downtime).with(host.name, anything).returns(true).once
+        assert host.destroy
+      end
     end
 
     test 'setMonitoring' do
