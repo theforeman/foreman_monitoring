@@ -14,6 +14,7 @@ module HostStatus
       grouped_results.each do |resultset, _count|
         result, downtime, acknowledged = resultset
         next if downtime
+        result = map_result_to_status(result)
         result = WARNING if acknowledged || result == UNKNOWN
         state = result if result > state
       end
@@ -71,6 +72,20 @@ module HostStatus
 
     def grouped_results
       host.monitoring_results.group(%i[result downtime acknowledged]).count
+    end
+
+    def map_result_to_status(result)
+      return result if Rails::VERSION::MAJOR < 5
+      case result.to_sym
+      when :ok
+        OK
+      when :warning
+        WARNING
+      when :critical
+        CRITICAL
+      else
+        UNKNOWN
+      end
     end
   end
 end
