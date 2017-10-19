@@ -1,18 +1,17 @@
 module ForemanMonitoring
   module HostsControllerExtensions
-    extend ActiveSupport::Concern
+    def self.prepended(base)
+      base.class_eval do
+        before_action :find_resource_with_monitoring, :only => [:downtime]
+        before_action :find_multiple_with_monitoring, :only => %i[select_multiple_downtime update_multiple_downtime
+                                                                  select_multiple_monitoring_proxy update_multiple_monitoring_proxy]
+        before_action :validate_host_downtime_params, :only => [:downtime]
+        before_action :validate_hosts_downtime_params, :only => [:update_multiple_downtime]
+        before_action :validate_multiple_monitoring_proxy, :only => :update_multiple_monitoring_proxy
 
-    included do
-      before_action :find_resource_with_monitoring, :only => [:downtime]
-      before_action :find_multiple_with_monitoring, :only => %i[select_multiple_downtime update_multiple_downtime
-                                                                select_multiple_monitoring_proxy update_multiple_monitoring_proxy]
-      before_action :validate_host_downtime_params, :only => [:downtime]
-      before_action :validate_hosts_downtime_params, :only => [:update_multiple_downtime]
-      before_action :validate_multiple_monitoring_proxy, :only => :update_multiple_monitoring_proxy
-
-      alias_method :find_resource_with_monitoring, :find_resource
-      alias_method :find_multiple_with_monitoring, :find_multiple
-      alias_method_chain :update_multiple_power_state, :monitoring
+        alias_method :find_resource_with_monitoring, :find_resource
+        alias_method :find_multiple_with_monitoring, :find_multiple
+      end
     end
 
     def downtime
@@ -65,7 +64,7 @@ module ForemanMonitoring
       update_multiple_proxy(_('Monitoring'), :monitoring_proxy=)
     end
 
-    def update_multiple_power_state_with_monitoring
+    def update_multiple_power_state
       options = {
         :comment => 'Power state changed in Foreman',
         :author => "Foreman User #{User.current}",
@@ -86,7 +85,7 @@ module ForemanMonitoring
           end
         end
       end
-      update_multiple_power_state_without_monitoring
+      super
     end
 
     private
