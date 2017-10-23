@@ -64,6 +64,8 @@ module ForemanMonitoring
         # add monitoring smart proxy to hosts and hostgroups
         smart_proxy_for Host::Managed, :monitoring_proxy, monitoring_proxy_options
         smart_proxy_for Hostgroup, :monitoring_proxy, monitoring_proxy_options
+
+        add_controller_action_scope(HostsController, :index) { |base_scope| base_scope.includes(:monitoring_proxy) }
       end
     end
 
