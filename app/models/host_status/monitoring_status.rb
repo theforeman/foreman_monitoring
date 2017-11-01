@@ -11,7 +11,7 @@ module HostStatus
 
     def to_status(_options = {})
       state = OK
-      grouped_results.each do |resultset, _count|
+      grouped_results.each_key do |resultset|
         result, downtime, acknowledged = resultset
         next if downtime
         result = map_result_to_status(result)

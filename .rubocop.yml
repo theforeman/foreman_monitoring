@@ -2,7 +2,9 @@ inherit_from:
   - .rubocop_todo.yml
 
 AllCops:
+  TargetRubyVersion: 2.2
   Exclude:
+    - 'Rakefile'
     - 'doc/plugins/**'
 
 # Don't enforce documentation
@@ -16,7 +18,7 @@ Rails/ActionFilter:
 Metrics/MethodLength:
   Max: 40
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/RedundantSelf:
@@ -25,7 +27,7 @@ Style/RedundantSelf:
 Metrics/ClassLength:
   Max: 500
 
-Style/FileName:
+Naming/FileName:
   Exclude:
       - 'db/seeds.d/*'
 
@@ -62,7 +64,7 @@ Metrics/LineLength:
 Metrics/ModuleLength:
     Max: 400
 
-Style/MethodName:
+Naming/MethodName:
   Exclude:
     - 'app/models/concerns/orchestration/monitoring.rb'
 
