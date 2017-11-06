@@ -2,13 +2,13 @@ require 'test_plugin_helper'
 
 class MonitoringTest < ActiveSupport::TestCase
   setup do
-    User.current = FactoryGirl.build(:user, :admin)
+    User.current = FactoryBot.build(:user, :admin)
     setup_settings
     disable_monitoring_orchestration
   end
 
-  let(:monitoring_proxy) { FactoryGirl.create(:smart_proxy, :monitoring) }
-  let(:host) { FactoryGirl.create(:host, :managed, :with_monitoring, :monitoring_proxy => monitoring_proxy) }
+  let(:monitoring_proxy) { FactoryBot.create(:smart_proxy, :monitoring) }
+  let(:host) { FactoryBot.create(:host, :managed, :with_monitoring, :monitoring_proxy => monitoring_proxy) }
   let(:monitoring) { Monitoring.new(:monitoring_proxy => monitoring_proxy) }
 
   test '#set_downtime_host should call proxy api' do
