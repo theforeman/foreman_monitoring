@@ -1,8 +1,8 @@
-FactoryGirl.modify do
+FactoryBot.modify do
   factory :host do
     trait :with_monitoring do
       monitoring_proxy do
-        FactoryGirl.create(:smart_proxy, :monitoring)
+        FactoryBot.create(:smart_proxy, :monitoring)
       end
     end
 
@@ -12,7 +12,7 @@ FactoryGirl.modify do
       end
       after(:create) do |host, evaluator|
         evaluator.monitoring_result_count.times do
-          FactoryGirl.create(:monitoring_result, :host => host)
+          FactoryBot.create(:monitoring_result, :host => host)
         end
       end
     end

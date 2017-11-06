@@ -2,14 +2,14 @@ require 'test_plugin_helper'
 
 class HostTest < ActiveSupport::TestCase
   setup do
-    User.current = FactoryGirl.build(:user, :admin)
+    User.current = FactoryBot.build(:user, :admin)
     setup_settings
     disable_orchestration
     disable_monitoring_orchestration
   end
 
   context 'downtime handling' do
-    let(:host) { FactoryGirl.create(:host, :managed) }
+    let(:host) { FactoryBot.create(:host, :managed) }
 
     test 'it should set a downtime when build status changes' do
       host.expects(:downtime_host).once
@@ -22,7 +22,7 @@ class HostTest < ActiveSupport::TestCase
   end
 
   context 'a host with monitoring orchestration' do
-    let(:host) { FactoryGirl.build(:host, :managed, :with_monitoring) }
+    let(:host) { FactoryBot.build(:host, :managed, :with_monitoring) }
 
     context 'with create/delete actions' do
       setup do
@@ -125,7 +125,7 @@ class HostTest < ActiveSupport::TestCase
   end
 
   context 'a host without monitoring' do
-    let(:host) { FactoryGirl.build(:host, :managed) }
+    let(:host) { FactoryBot.build(:host, :managed) }
 
     test 'should not queue any monitoring actions' do
       assert_valid host

@@ -6,55 +6,55 @@ class MonitoringStatusTest < ActiveSupport::TestCase
     disable_monitoring_orchestration
   end
 
-  let(:host) { FactoryGirl.create(:host, :with_monitoring) }
+  let(:host) { FactoryBot.create(:host, :with_monitoring) }
   let(:status) { HostStatus::MonitoringStatus.new(:host => host) }
 
   context 'status changes' do
     test '#to_status should change when monitoring results change' do
-      FactoryGirl.create(:monitoring_result, :ok, :host => host)
+      FactoryBot.create(:monitoring_result, :ok, :host => host)
       assert_equal HostStatus::MonitoringStatus::OK, status.to_status
 
-      FactoryGirl.create(:monitoring_result, :warning, :host => host)
+      FactoryBot.create(:monitoring_result, :warning, :host => host)
       assert_equal HostStatus::MonitoringStatus::WARNING, status.to_status
 
-      FactoryGirl.create(:monitoring_result, :unknown, :host => host)
+      FactoryBot.create(:monitoring_result, :unknown, :host => host)
       assert_equal HostStatus::MonitoringStatus::WARNING, status.to_status
 
-      FactoryGirl.create(:monitoring_result, :critical, :host => host)
+      FactoryBot.create(:monitoring_result, :critical, :host => host)
       assert_equal HostStatus::MonitoringStatus::CRITICAL, status.to_status
     end
 
     test '#to_status should be warning with critical acknowledged' do
-      FactoryGirl.create(:monitoring_result, :critical, :acknowledged, :host => host)
+      FactoryBot.create(:monitoring_result, :critical, :acknowledged, :host => host)
       assert_equal HostStatus::MonitoringStatus::WARNING, status.to_status
     end
 
     test '#to_status should be ok with critical in downtime' do
-      FactoryGirl.create(:monitoring_result, :critical, :downtime, :host => host)
+      FactoryBot.create(:monitoring_result, :critical, :downtime, :host => host)
       assert_equal HostStatus::MonitoringStatus::OK, status.to_status
     end
 
     test '#to_global should change when monitoring results change' do
-      FactoryGirl.create(:monitoring_result, :ok, :host => host)
+      FactoryBot.create(:monitoring_result, :ok, :host => host)
       status.refresh
       assert_equal HostStatus::Global::OK, status.to_global
 
-      FactoryGirl.create(:monitoring_result, :warning, :host => host)
+      FactoryBot.create(:monitoring_result, :warning, :host => host)
       status.refresh
       assert_equal HostStatus::Global::WARN, status.to_global
 
-      FactoryGirl.create(:monitoring_result, :unknown, :host => host)
+      FactoryBot.create(:monitoring_result, :unknown, :host => host)
       status.refresh
       assert_equal HostStatus::Global::WARN, status.to_global
 
-      FactoryGirl.create(:monitoring_result, :critical, :host => host)
+      FactoryBot.create(:monitoring_result, :critical, :host => host)
       status.refresh
       assert_equal HostStatus::Global::ERROR, status.to_global
     end
   end
 
   context 'status with host with monitoring results' do
-    let(:host) { FactoryGirl.create(:host, :with_monitoring, :with_monitoring_results) }
+    let(:host) { FactoryBot.create(:host, :with_monitoring, :with_monitoring_results) }
 
     test '#relevant? is only for hosts not in build mode' do
       host.build = false

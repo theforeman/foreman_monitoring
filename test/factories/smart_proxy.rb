@@ -1,4 +1,4 @@
-FactoryGirl.modify do
+FactoryBot.modify do
   factory :smart_proxy do
     trait :monitoring do
       features { |sp| [sp.association(:feature, :monitoring)] }

@@ -8,7 +8,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     ProxyAPI::Monitoring.stubs(:create_host).returns(true)
     ProxyAPI::Monitoring.stubs(:update_host).returns(true)
     ProxyAPI::Monitoring.stubs(:delete_host).returns(true)
-    @host = FactoryGirl.create(:host, :managed)
+    @host = FactoryBot.create(:host, :managed)
   end
 
   context 'when setting a host downtime' do
@@ -80,7 +80,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
   describe 'setting a downtime on multiple hosts' do
     before do
-      @hosts = FactoryGirl.create_list(:host, 2, :with_monitoring)
+      @hosts = FactoryBot.create_list(:host, 2, :with_monitoring)
       @request.env['HTTP_REFERER'] = hosts_path
     end
 
@@ -116,7 +116,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
   describe 'changing the power state on multiple hosts' do
     before do
-      @hosts = FactoryGirl.create_list(:host, 2, :with_monitoring)
+      @hosts = FactoryBot.create_list(:host, 2, :with_monitoring)
       @request.env['HTTP_REFERER'] = hosts_path
 
       power_mock = mock('power')
@@ -167,8 +167,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
   end
 
   describe 'changing the monitoring proxy of multiple hosts' do
-    let(:hosts) { FactoryGirl.create_list(:host, 2, :with_monitoring) }
-    let(:monitoring_proxy) { FactoryGirl.create(:smart_proxy, :monitoring, :organizations => [hosts.first.organization], :locations => [hosts.first.location]) }
+    let(:hosts) { FactoryBot.create_list(:host, 2, :with_monitoring) }
+    let(:monitoring_proxy) { FactoryBot.create(:smart_proxy, :monitoring, :organizations => [hosts.first.organization], :locations => [hosts.first.location]) }
     before do
       @request.env['HTTP_REFERER'] = hosts_path
     end

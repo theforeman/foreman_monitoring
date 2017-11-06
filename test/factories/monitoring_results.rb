@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :monitoring_result do
     sequence(:service) { |n| "Service #{n}" }
     result { rand(0..3) }
