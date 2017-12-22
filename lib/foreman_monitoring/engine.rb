@@ -17,10 +17,10 @@ module ForemanMonitoring
     end
 
     initializer 'foreman_monitoring.load_default_settings',
-      :before => :load_config_initializers do |_app|
+                :before => :load_config_initializers do |_app|
       if begin
         Setting.table_exists?
-      rescue
+      rescue StandardError
         false
       end
         require_dependency File.expand_path('../../../app/models/setting/monitoring.rb', __FILE__)
@@ -35,16 +35,16 @@ module ForemanMonitoring
 
         security_block :foreman_monitoring do
           permission :view_monitoring_results,
-            {},
-            :resource_type => 'Host'
+                     {},
+                     :resource_type => 'Host'
           permission :manage_host_downtimes,
-            { :hosts => [:downtime, :select_multiple_downtime, :update_multiple_downtime] },
-            :resource_type => 'Host'
+                     { :hosts => [:downtime, :select_multiple_downtime, :update_multiple_downtime] },
+                     :resource_type => 'Host'
           permission :upload_monitoring_results,
-            :'api/v2/monitoring_results' => [:create]
+                     :'api/v2/monitoring_results' => [:create]
           permission :edit_hosts,
-            { :hosts => [:select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy] },
-            :resource_type => 'Host'
+                     { :hosts => [:select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy] },
+                     :resource_type => 'Host'
         end
 
         role 'Monitoring viewer', [:view_monitoring_results]
@@ -75,7 +75,7 @@ module ForemanMonitoring
         ::Hostgroup.send(:include, ForemanMonitoring::HostgroupExtensions)
         ::HostsHelper.send(:prepend, ForemanMonitoring::HostsHelperExt)
         ::HostsController.send(:prepend, ForemanMonitoring::HostsControllerExtensions)
-      rescue => e
+      rescue StandardError => e
         Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
       end
     end

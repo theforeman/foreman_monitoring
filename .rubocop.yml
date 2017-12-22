@@ -73,3 +73,6 @@ Style/SymbolArray:
 
 Style/FormatString:
   Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false

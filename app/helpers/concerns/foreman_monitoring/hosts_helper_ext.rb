@@ -2,12 +2,8 @@ module ForemanMonitoring
   module HostsHelperExt
     def multiple_actions
       actions = super
-      if authorized_for(:controller => :hosts, :action => :select_multiple_downtime)
-        actions << [_('Set downtime'), select_multiple_downtime_hosts_path]
-      end
-      if authorized_for(:controller => :hosts, :action => :select_multiple_monitoring_proxy)
-        actions << [_('Change Monitoring Proxy'), select_multiple_monitoring_proxy_hosts_path]
-      end
+      actions << [_('Set downtime'), select_multiple_downtime_hosts_path] if authorized_for(:controller => :hosts, :action => :select_multiple_downtime)
+      actions << [_('Change Monitoring Proxy'), select_multiple_monitoring_proxy_hosts_path] if authorized_for(:controller => :hosts, :action => :select_multiple_monitoring_proxy)
       actions
     end
 

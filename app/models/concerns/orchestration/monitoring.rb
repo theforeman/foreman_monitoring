@@ -23,10 +23,9 @@ module Orchestration::Monitoring
   def queue_monitoring_update
     return unless monitoring_update_required?(monitoring_object[:attrs], monitoring_attributes)
     Rails.logger.debug('Detected a change to the monitoring object is required.')
-    if ::Monitoring.create_action?(:create)
-      queue.create(:name   => _('Monitoring update for %s') % old, :priority => 2,
-                   :action => [self, :setMonitoringUpdate])
-    end
+    return unless ::Monitoring.create_action?(:create)
+    queue.create(:name   => _('Monitoring update for %s') % old, :priority => 2,
+                 :action => [self, :setMonitoringUpdate])
   end
 
   def queue_monitoring_destroy
@@ -35,30 +34,29 @@ module Orchestration::Monitoring
       queue.create(:name   => _('Removing monitoring object for %s') % self, :priority => 2,
                    :action => [self, :delMonitoring])
     end
-    if ::Monitoring.delete_action?(:downtime)
-      queue.create(:name   => _('Set monitoring downtime for %s') % self, :priority => 2,
-                   :action => [self, :setMonitoringDowntime])
-    end
+    return unless ::Monitoring.delete_action?(:downtime)
+    queue.create(:name   => _('Set monitoring downtime for %s') % self, :priority => 2,
+                 :action => [self, :setMonitoringDowntime])
   end
 
   def setMonitoring
     Rails.logger.info "Adding Monitoring object for #{name}"
     monitoring.create_host(self)
-  rescue => e
+  rescue StandardError => e
     failure format(_("Failed to create a monitoring object %{name}: %{message}\n "), :name => name, :message => e.message), e
   end
 
   def delMonitoring
     Rails.logger.info "Deleting Monitoring object for #{name}"
     monitoring.delete_host(self)
-  rescue => e
+  rescue StandardError => e
     failure format(_("Failed to delete a monitoring object %{name}: %{message}\n "), :name => name, :message => e.message), e
   end
 
   def setMonitoringUpdate
     Rails.logger.info "Updating Monitoring object for #{name}"
     monitoring.update_host(self)
-  rescue => e
+  rescue StandardError => e
     failure format(_("Failed to update a monitoring object %{name}: %{message}\n "), :name => name, :message => e.message), e
   end
 
@@ -67,14 +65,14 @@ module Orchestration::Monitoring
   def setMonitoringDowntime
     Rails.logger.info "Setting Monitoring downtime for #{name}"
     monitoring.set_downtime_host(self, monitoring_downtime_defaults)
-  rescue => e
+  rescue StandardError => e
     failure format(_("Failed to set a monitoring downtime for %{name}: %{message}\n "), :name => name, :message => e.message), e
   end
 
   def delMonitoringDowntime
     Rails.logger.info "Deleting Monitoring downtime for #{name}"
     monitoring.del_downtime_host(self, monitoring_downtime_defaults)
-  rescue => e
+  rescue StandardError => e
     failure format(_("Failed to set a monitoring downtime for %{name}: %{message}\n "), :name => name, :message => e.message), e
   end
 

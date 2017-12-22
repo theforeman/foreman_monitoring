@@ -18,7 +18,7 @@ module Api
       def create
         begin
           MonitoringResult.import(monitoring_result_params.with_indifferent_access)
-        rescue => e
+        rescue StandardError => e
           logger.error "Failed to import monitoring result: #{e.message}"
           logger.debug e.backtrace.join("\n")
           render :json => { 'message' => e.message }, :status => :unprocessable_entity

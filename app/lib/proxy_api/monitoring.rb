@@ -7,25 +7,25 @@ module ProxyAPI
 
     def create_host_downtime(host, args = {})
       parse(post(args, "downtime/host/#{host}"))
-    rescue => e
+    rescue StandardError => e
       raise ProxyException.new(url, e, N_('Unable to set downtime for %s') % host)
     end
 
     def remove_host_downtime(host, args = {})
       parse(delete("downtime/host/#{host}?#{args.to_query}"))
-    rescue => e
+    rescue StandardError => e
       raise ProxyException.new(url, e, N_('Unable to remove downtime for %s') % host)
     end
 
     def create_host(host, attributes = {})
       parse(put({ :attributes => attributes }, "host/#{host}"))
-    rescue => e
+    rescue StandardError => e
       raise ProxyException.new(url, e, N_('Unable to create monitoring host object for %s') % host)
     end
 
     def update_host(host, attributes = {})
       parse(post({ :attributes => attributes }, "host/#{host}"))
-    rescue => e
+    rescue StandardError => e
       raise ProxyException.new(url, e, N_('Unable to update monitoring host object for %s') % host)
     end
 
@@ -34,7 +34,7 @@ module ProxyAPI
       parse(delete("host/#{host}"))
     rescue RestClient::ResourceNotFound
       true
-    rescue => e
+    rescue StandardError => e
       raise ProxyException.new(url, e, N_('Unable to delete monitoring host object for %s') % host)
     end
 
@@ -42,7 +42,7 @@ module ProxyAPI
       parse(get("host/#{host}"))
     rescue RestClient::ResourceNotFound
       nil
-    rescue => e
+    rescue StandardError => e
       raise ProxyException.new(url, e, N_('Unable to query monitoring host object for %{host}: %{message}') % { :host => host, :message => e.try(:response) || e.try(:message) })
     end
   end
