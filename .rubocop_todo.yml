@@ -54,13 +54,6 @@ Rails/Delegate:
 Rails/DynamicFindBy:
   Enabled: false
 
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: spec/**/*, test/**/*
-Rails/HttpPositionalArguments:
-  Enabled: false
-
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
