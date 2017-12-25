@@ -18,14 +18,16 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'the flash should inform it' do
       Host::Managed.any_instance.stubs(:downtime_host).returns(true)
-      put :downtime, {
-        :id => @host.name,
-        :downtime => {
-          :comment => 'Maintenance work.',
-          :starttime => Time.current,
-          :endtime => Time.current.advance(:hours => 2)
-        }
-      }, set_session_user
+      put :downtime,
+          params: {
+            :id => @host.name,
+            :downtime => {
+              :comment   => 'Maintenance work.',
+              :starttime => Time.current,
+              :endtime   => Time.current.advance(:hours => 2)
+            }
+          },
+          session: set_session_user
       assert_response :found
       assert_redirected_to host_path(:id => @host)
       assert_nil flash[:error]
@@ -34,7 +36,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     end
 
     test 'with missing comment param the flash should inform it' do
-      put :downtime, { :id => @host.name }, set_session_user
+      put :downtime, params: { :id => @host.name }, session: set_session_user
       assert_response :found
       assert_redirected_to host_path(:id => @host)
       assert_not_nil flash[:error]
@@ -42,7 +44,9 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     end
 
     test 'with missing date params the flash should inform it' do
-      put :downtime, { :id => @host.name, :downtime => { :comment => 'Maintenance work.' } }, set_session_user
+      put :downtime,
+          params: { :id => @host.name, :downtime => { :comment => 'Maintenance work.' } },
+          session: set_session_user
       assert_response :found
       assert_redirected_to host_path(:id => @host)
       assert_not_nil flash[:error]
@@ -50,14 +54,16 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     end
 
     test 'with invalid starttime the flash should inform it' do
-      put :downtime, {
-        :id => @host.name,
-        :downtime => {
-          :comment => 'Maintenance work.',
-          :starttime => 'invalid',
-          :endtime => 'invalid'
-        }
-      }, set_session_user
+      put :downtime,
+          params: {
+            :id => @host.name,
+            :downtime => {
+              :comment   => 'Maintenance work.',
+              :starttime => 'invalid',
+              :endtime   => 'invalid'
+            }
+          },
+          session: set_session_user
       assert_response :found
       assert_redirected_to host_path(:id => @host)
       assert_not_nil flash[:error]
@@ -67,14 +73,16 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     test 'should parse the times in the correct time zone' do
       User.current.update_attribute(:timezone, 'Berlin')
       Host::Managed.any_instance.expects(:downtime_host).with(has_entries(:start_time => 1_492_676_100, :end_time => 1_492_683_300))
-      put :downtime, {
-        :id => @host.name,
-        :downtime => {
-          :comment => 'Maintenance work.',
-          :starttime => '2017-04-20T10:15',
-          :endtime => '2017-04-20T12:15'
-        }
-      }, set_session_user
+      put :downtime,
+          params: {
+            :id => @host.name,
+            :downtime => {
+              :comment   => 'Maintenance work.',
+              :starttime => '2017-04-20T10:15',
+              :endtime   => '2017-04-20T12:15'
+            }
+          },
+          session: set_session_user
     end
   end
 
@@ -86,7 +94,10 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'show a host selection' do
       host_ids = @hosts.map(&:id)
-      xhr :post, :select_multiple_downtime, { :host_ids => host_ids }, set_session_user
+      post :select_multiple_downtime,
+           params: { :host_ids => host_ids },
+           session: set_session_user,
+           xhr: true
       assert_response :success
       assert_includes response.body, @hosts.first.name
       assert_includes response.body, @hosts.last.name
@@ -103,8 +114,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         }
       }
 
-      post :update_multiple_downtime, params,
-           set_session_user
+      post :update_multiple_downtime, params: params, session: set_session_user
 
       assert_response :found
       assert_redirected_to hosts_path
@@ -135,8 +145,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         }
       }
 
-      post :update_multiple_power_state, params,
-           set_session_user
+      post :update_multiple_power_state, params: params, session: set_session_user
 
       assert_response :found
       assert_redirected_to hosts_path
@@ -155,8 +164,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         }
       }
 
-      post :update_multiple_power_state, params,
-           set_session_user
+      post :update_multiple_power_state, params: params, session: set_session_user
 
       assert_response :found
       assert_redirected_to hosts_path
@@ -175,7 +183,10 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'show a host selection' do
       host_ids = hosts.map(&:id)
-      xhr :post, :select_multiple_monitoring_proxy, { :host_ids => host_ids }, set_session_user
+      post :select_multiple_monitoring_proxy,
+           params: { :host_ids => host_ids },
+           session: set_session_user,
+           xhr: true
       assert_response :success
       hosts.each do |host|
         assert response.body =~ /#{host.name}/m
@@ -192,8 +203,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
         :proxy => { :proxy_id => monitoring_proxy.id }
       }
 
-      post :update_multiple_monitoring_proxy, params,
-           set_session_user
+      post :update_multiple_monitoring_proxy, params: params, session: set_session_user
 
       assert_response :found
       assert_redirected_to hosts_path
