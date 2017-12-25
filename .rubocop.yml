@@ -3,17 +3,17 @@ inherit_from:
 
 AllCops:
   TargetRubyVersion: 2.2
+  TargetRailsVersion: 5.1
   Exclude:
     - 'Rakefile'
     - 'doc/plugins/**'
 
+Rails:
+  Enabled: true
+
 # Don't enforce documentation
 Style/Documentation:
   Enabled: false
-
-# Force before_filter until upgrade to Rails 4
-Rails/ActionFilter:
-  EnforcedStyle: action
 
 Metrics/MethodLength:
   Max: 40
