@@ -1,4 +1,4 @@
-class AddMonitoringProxyIdToHostAndHostgroup < ActiveRecord::Migration
+class AddMonitoringProxyIdToHostAndHostgroup < ActiveRecord::Migration[4.2]
   def self.up
     add_column :hosts, :monitoring_proxy_id, :integer
     add_column :hostgroups, :monitoring_proxy_id, :integer
