@@ -1,4 +1,4 @@
-class CreateMonitoringResults < ActiveRecord::Migration
+class CreateMonitoringResults < ActiveRecord::Migration[4.2]
   def change
     create_table :monitoring_results do |t|
       t.references :host, :null => false
