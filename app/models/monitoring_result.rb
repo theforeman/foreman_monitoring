@@ -1,4 +1,4 @@
-class MonitoringResult < ActiveRecord::Base
+class MonitoringResult < ApplicationRecord
   enum :result => %i[ok warning critical unknown]
 
   belongs_to_host
