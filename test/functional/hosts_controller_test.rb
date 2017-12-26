@@ -71,7 +71,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     end
 
     test 'should parse the times in the correct time zone' do
-      User.current.update_attribute(:timezone, 'Berlin')
+      User.current.timezone = 'Berlin'
+      User.current.save
       Host::Managed.any_instance.expects(:downtime_host).with(has_entries(:start_time => 1_492_676_100, :end_time => 1_492_683_300))
       put :downtime,
           params: {

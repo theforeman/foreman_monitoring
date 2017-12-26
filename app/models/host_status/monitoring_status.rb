@@ -60,9 +60,7 @@ module HostStatus
       host.monitoring_results.any?
     end
 
-    def host_monitored?
-      host.monitored?
-    end
+    delegate :monitored?, to: :host, prefix: true
 
     def should_affect_global_status?
       Setting[:monitoring_affect_global_status]

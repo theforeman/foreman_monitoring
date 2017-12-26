@@ -16,7 +16,7 @@ Style/Documentation:
   Enabled: false
 
 Metrics/MethodLength:
-  Max: 40
+  Enabled: false
 
 Naming/AccessorMethodName:
   Enabled: false
@@ -24,17 +24,11 @@ Naming/AccessorMethodName:
 Style/RedundantSelf:
   Enabled: false
 
-Metrics/ClassLength:
-  Max: 500
-
 Naming/FileName:
   Exclude:
       - 'db/seeds.d/*'
 
 Style/WordArray:
-  Enabled: false
-
-Style/BracesAroundHashParameters:
   Enabled: false
 
 Style/RescueModifier:
@@ -59,10 +53,22 @@ Style/HashSyntax:
 Metrics/LineLength:
   Max: 190
 
-# Offense count: 21
-# Configuration parameters: CountComments.
 Metrics/ModuleLength:
-    Max: 400
+  Enabled: false
+
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/**/engine.rb'
+    - 'test/**/*'
+
+Performance/FixedSize:
+  Exclude:
+    - 'test/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'lib/**/engine.rb'
+    - 'test/**/*'
 
 Naming/MethodName:
   Exclude:
@@ -75,4 +81,7 @@ Style/FormatString:
   Enabled: false
 
 Style/FormatStringToken:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
   Enabled: false

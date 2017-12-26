@@ -4,7 +4,7 @@ class MonitoringResult < ApplicationRecord
   belongs_to_host
 
   def self.import(result)
-    host = Host.find_by_name(result[:host])
+    host = Host.find_by(name: result[:host])
 
     if host.nil?
       logger.error "Unable to find host #{result[:host]}"
