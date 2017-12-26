@@ -6,7 +6,7 @@ module ForemanMonitoring
 
         after_build :downtime_host_build
 
-        has_many :monitoring_results, :dependent => :destroy, :foreign_key => 'host_id'
+        has_many :monitoring_results, :dependent => :destroy, :foreign_key => 'host_id', :inverse_of => :host
       end
     end
 
