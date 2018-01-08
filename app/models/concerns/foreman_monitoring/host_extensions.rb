@@ -1,13 +1,15 @@
 module ForemanMonitoring
   module HostExtensions
-    def self.prepended(base)
-      base.class_eval do
-        include Orchestration::Monitoring
+    extend ActiveSupport::Concern
+    included do
+      include Orchestration::Monitoring
 
-        after_build :downtime_host_build
+      after_build :downtime_host_build
 
-        has_many :monitoring_results, :dependent => :destroy, :foreign_key => 'host_id'
-      end
+      alias_method_chain :smart_proxy_ids, :monitoring_proxy
+      alias_method_chain :hostgroup_inherited_attributes, :monitoring
+
+      has_many :monitoring_results, :dependent => :destroy, :foreign_key => 'host_id'
     end
 
     def monitoring_status(options = {})
@@ -40,12 +42,12 @@ module ForemanMonitoring
       monitoring_proxy.present?
     end
 
-    def hostgroup_inherited_attributes
-      super + ['monitoring_proxy_id']
+    def hostgroup_inherited_attributes_with_monitoring
+      hostgroup_inherited_attributes_without_monitoring + ['monitoring_proxy_id']
     end
 
-    def smart_proxy_ids
-      ids = super
+    def smart_proxy_ids_with_monitoring_proxy
+      ids = smart_proxy_ids_without_monitoring_proxy
       [monitoring_proxy, hostgroup.try(:monitoring_proxy)].compact.each do |proxy|
         ids << proxy.id
       end

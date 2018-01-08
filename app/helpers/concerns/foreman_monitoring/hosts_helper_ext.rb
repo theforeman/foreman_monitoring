@@ -1,17 +1,18 @@
 module ForemanMonitoring
   module HostsHelperExt
-    def multiple_actions
-      actions = super
-      if authorized_for(:controller => :hosts, :action => :select_multiple_downtime)
-        actions << [_('Set downtime'), select_multiple_downtime_hosts_path]
-      end
-      if authorized_for(:controller => :hosts, :action => :select_multiple_monitoring_proxy)
-        actions << [_('Change Monitoring Proxy'), select_multiple_monitoring_proxy_hosts_path]
-      end
-      actions
+    extend ActiveSupport::Concern
+
+    included do
+      alias_method_chain :host_title_actions, :monitoring
+      alias_method_chain :multiple_actions, :monitoring
     end
 
-    def host_title_actions(host)
+    def multiple_actions_with_monitoring
+      return multiple_actions_without_monitoring unless authorized_for(:controller => :hosts, :action => :select_multiple_downtime)
+      multiple_actions_without_monitoring + [[_('Set downtime'), select_multiple_downtime_hosts_path], [_('Change Monitoring Proxy'), select_multiple_monitoring_proxy_hosts_path]]
+    end
+
+    def host_title_actions_with_monitoring(host)
       title_actions(
         button_group(
           display_link_if_authorized(_('Downtime'),
@@ -26,7 +27,7 @@ module ForemanMonitoring
                                                     :target => '#set_host_downtime' })
         )
       )
-      super
+      host_title_actions_without_monitoring(host)
     end
 
     def host_monitoring_result_icon_class(result)
