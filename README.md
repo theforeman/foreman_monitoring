@@ -17,7 +17,7 @@ The gem name is `foreman_monitoring`.
 
 RPM users can install the `tfm-rubygem-foreman_monitoring` package.
 
-Deb users can install the `ruby-foreman_monitoring` package.
+Deb users can install the `ruby-foreman-monitoring` package.
 
 If using the gem as installation source database enhancement and service restart must
 be done manually.
