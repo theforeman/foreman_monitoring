@@ -28,6 +28,13 @@ foreman-rake db:seed
 touch ~foreman/tmp/restart.txt
 ```
 
+## Compatibility
+
+| Foreman Version | Plugin Version |
+| --------------- | --------------:|
+| >= 1.15         | ~> 0.1         |
+| >= 1.17         | ~> 1.0         |
+
 # Usage
 
 For managing a host in the monitoring solution a Smart Proxy providing
