@@ -3,6 +3,7 @@ class MonitoringResult < ApplicationRecord
 
   belongs_to_host
 
+  # rubocop:disable Metrics/AbcSize
   def self.import(result)
     host = Host.find_by(name: result[:host])
 
@@ -27,7 +28,8 @@ class MonitoringResult < ApplicationRecord
     end
 
     created = MonitoringResult.where(:host => host, :service => result[:service]).first_or_create
-    if created.timestamp.blank? || updates[:timestamp].blank? || created.timestamp < updates[:timestamp]
+    # rubocop:disable Rails/Date
+    if created.timestamp.blank? || updates[:timestamp].blank? || (created.timestamp.to_time - updates[:timestamp].to_time) < 2
       created.update_attributes(updates)
 
       if created.persisted?
@@ -37,7 +39,9 @@ class MonitoringResult < ApplicationRecord
     else
       logger.debug "Skipping monitoring result import for #{host} as it is older than what we have."
     end
+    # rubocop:enable Rails/Date
   end
+  # rubocop:enable Metrics/AbcSize
 
   def status
     return :ok if downtime
