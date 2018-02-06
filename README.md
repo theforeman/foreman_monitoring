@@ -42,15 +42,15 @@ the `monitoring` feature has to be assigned. This can be done during
 provisioning or as a bulk action from the host overview.
 
 You can configure the default action which will be done during host
-provisioning and deprovisioning. Provisioning allows to create a monitoring
-object or take no action while deprovisioing allows to delete the monitoring
-object, set a downtime or take no action. For rebuild it will by default
+provisioning and de-provisioning. Provisioning allows to create a monitoring
+object or take no action while de-provisoning allows deleting the monitoring
+object, set a downtime or take no action. For rebuild, it will by default
 set a downtime.
 
 The plugin will show you the monitoring status as a sub-status and a detail
 panel. You can configure if the sub-status should affect the global status.
 
-Furthermore it allows to individually set a downtime at the host detail view
+Furthermore, it allows to individually set a downtime at the host detail view
 or as a bulk action from the host overview.
 
 # Troubleshooting
@@ -58,8 +58,8 @@ or as a bulk action from the host overview.
 Logging entries relevant to the plug-in will be located in the Foreman's log
 which is by default `/var/log/foreman/production.log`.
 
-Also check the troubleshooting section of the Smart Proxy plug-in if problems
-occure in the underlying communication.
+Also, check the troubleshooting section of the Smart Proxy plug-in if problems
+occur in the underlying communication.
 
 ## Contributing
 
