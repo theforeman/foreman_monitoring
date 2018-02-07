@@ -1,7 +1,7 @@
 <%- if authorized_for(:permission => 'view_monitoring_results', :auth_object => @host) && @host.monitored? -%>
 <div class="tab-pane" id="monitoring">
 <% if @host.monitoring_results.any? %>
-  <table class="table table-bordered table-striped">
+  <table class="<%= table_css_classes %>">
     <thead
       <tr>
         <th colspan="2">Monitoring</th>
