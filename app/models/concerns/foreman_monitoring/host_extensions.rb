@@ -64,7 +64,7 @@ module ForemanMonitoring
         :compute_resource => compute_resource.try(:to_label),
         :hostgroup => hostgroup.try(:to_label),
         :organization => organization.try(:name),
-        :location => organization.try(:name),
+        :location => location.try(:name),
         :comment => comment,
         :environment => environment.try(:to_s),
         :owner_name => owner.try(:name)
