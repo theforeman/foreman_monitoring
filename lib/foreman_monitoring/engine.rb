@@ -29,7 +29,7 @@ module ForemanMonitoring
 
     initializer 'foreman_monitoring.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_monitoring do
-        requires_foreman '>= 1.17'
+        requires_foreman '>= 1.18'
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 

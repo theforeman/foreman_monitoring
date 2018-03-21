@@ -45,7 +45,7 @@ module ForemanMonitoring
       end
 
       if failed_hosts.empty?
-        notice _('A downtime was set for the selected hosts.')
+        success _('A downtime was set for the selected hosts.')
       else
         error n_('A downtime clould not be set for host: %s.',
                  'A downtime could not be set for hosts: %s.',

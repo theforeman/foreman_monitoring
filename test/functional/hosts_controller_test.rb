@@ -31,8 +31,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_response :found
       assert_redirected_to host_path(:id => @host)
       assert_nil flash[:error]
-      assert_not_nil flash[:notice]
-      assert_equal "Created downtime for #{@host}", flash[:notice]
+      assert_not_nil flash[:success]
+      assert_equal "Created downtime for #{@host}", flash[:success]
     end
 
     test 'with missing comment param the flash should inform it' do
@@ -120,8 +120,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_response :found
       assert_redirected_to hosts_path
       assert_nil flash[:error]
-      assert_not_nil flash[:notice]
-      assert_equal 'A downtime was set for the selected hosts.', flash[:notice]
+      assert_not_nil flash[:success]
+      assert_equal 'A downtime was set for the selected hosts.', flash[:success]
     end
   end
 
@@ -151,8 +151,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_response :found
       assert_redirected_to hosts_path
       assert_nil flash[:error]
-      assert_not_nil flash[:notice]
-      assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:notice]
+      assert_not_nil flash[:success]
+      assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:success]
     end
 
     test 'should not set a downtime if not selected' do
@@ -170,8 +170,8 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_response :found
       assert_redirected_to hosts_path
       assert_nil flash[:error]
-      assert_not_nil flash[:notice]
-      assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:notice]
+      assert_not_nil flash[:success]
+      assert_equal 'The power state of the selected hosts will be set to poweroff', flash[:success]
     end
   end
 
@@ -209,7 +209,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
       assert_response :found
       assert_redirected_to hosts_path
       assert_nil flash[:error]
-      assert_equal "The Monitoring proxy of the selected hosts was set to #{monitoring_proxy.name}", flash[:notice]
+      assert_equal "The Monitoring proxy of the selected hosts was set to #{monitoring_proxy.name}", flash[:success]
 
       hosts.each do |host|
         as_admin do
