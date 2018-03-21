@@ -58,10 +58,10 @@ module ForemanMonitoring
       end
     end
 
-    def datetime_f(f, attr, options = {})
+    def monitoring_datetime_f(f, attr, options = {})
       field(f, attr, options) do
         addClass options, 'form-control'
-        f.datetime_local_field attr, options
+        f.datetime_field attr, options
       end
     end
   end
