@@ -17,10 +17,9 @@ module Api
 
       def create
         begin
-          MonitoringResult.import(monitoring_result_params.with_indifferent_access)
+          MonitoringResult.import(monitoring_result_params.to_h.with_indifferent_access)
         rescue StandardError => e
-          logger.error "Failed to import monitoring result: #{e.message}"
-          logger.debug e.backtrace.join("\n")
+          Foreman::Logging.exception('Failed to import monitoring result', e)
           render :json => { 'message' => e.message }, :status => :unprocessable_entity
           return
         end
