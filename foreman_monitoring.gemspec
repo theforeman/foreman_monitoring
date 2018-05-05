@@ -1,4 +1,4 @@
-require File.expand_path('../lib/foreman_monitoring/version', __FILE__)
+require File.expand_path('lib/foreman_monitoring/version', __dir__)
 
 Gem::Specification.new do |s|
   s.name        = 'foreman_monitoring'

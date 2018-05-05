@@ -24,16 +24,3 @@ Metrics/PerceivedComplexity:
 Naming/UncommunicativeMethodParamName:
   Exclude:
     - 'app/helpers/concerns/foreman_monitoring/hosts_helper_ext.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Rails/ActiveRecordAliases:
-  Exclude:
-    - 'app/models/monitoring_result.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'foreman_monitoring.gemspec'
-    - 'lib/foreman_monitoring/engine.rb'
