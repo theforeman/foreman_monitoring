@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProxyApiDhcpTest < ActiveSupport::TestCase
+class ProxyApiMonitoringTest < ActiveSupport::TestCase
   def setup
     @url = 'http://localhost:8443'
     @monitoring = ProxyAPI::Monitoring.new(:url => @url)
