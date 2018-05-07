@@ -1,4 +1,4 @@
-require File.expand_path('../lib/foreman_monitoring/version', __FILE__)
+require File.expand_path('lib/foreman_monitoring/version', __dir__)
 
 Gem::Specification.new do |s|
   s.name        = 'foreman_monitoring'
@@ -14,6 +14,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir['test/**/*']
 
   s.add_development_dependency 'rdoc'
-  s.add_development_dependency 'rubocop', '0.52.0'
+  s.add_development_dependency 'rubocop', '0.54.0'
   s.add_dependency 'deface', '< 2.0'
 end

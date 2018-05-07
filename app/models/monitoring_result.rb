@@ -30,7 +30,7 @@ class MonitoringResult < ApplicationRecord
     created = MonitoringResult.where(:host => host, :service => result[:service]).first_or_create
     # rubocop:disable Rails/Date
     if created.timestamp.blank? || updates[:timestamp].blank? || (created.timestamp.to_time - updates[:timestamp].to_time) < 2
-      created.update_attributes(updates)
+      created.update(updates)
 
       if created.persisted?
         logger.info("Imported monitoring result for #{host} in #{(Time.now.utc - start_time).round(2)} seconds")

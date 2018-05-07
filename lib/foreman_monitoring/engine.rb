@@ -23,7 +23,7 @@ module ForemanMonitoring
       rescue StandardError
         false
       end
-        require_dependency File.expand_path('../../../app/models/setting/monitoring.rb', __FILE__)
+        require_dependency File.expand_path('../../app/models/setting/monitoring.rb', __dir__)
       end
     end
 
@@ -81,7 +81,7 @@ module ForemanMonitoring
     end
 
     initializer 'foreman_monitoring.register_gettext', after: :load_config_initializers do |_app|
-      locale_dir = File.join(File.expand_path('../../..', __FILE__), 'locale')
+      locale_dir = File.join(File.expand_path('../..', __dir__), 'locale')
       locale_domain = 'foreman_monitoring'
       Foreman::Gettext::Support.add_text_domain locale_domain, locale_dir
     end
