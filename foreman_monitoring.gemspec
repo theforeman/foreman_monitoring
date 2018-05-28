@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = ForemanMonitoring::VERSION
   s.authors     = ['Timo Goebel']
   s.email       = ['timo.goebel@dm.de']
-  s.homepage    = 'http://www.github.com/theforeman/foreman_monitoring'
+  s.homepage    = 'https://github.com/theforeman/foreman_monitoring'
   s.summary     = 'Foreman plugin for monitoring system integration.'
   s.description = 'Foreman plugin for monitoring system integration.'
   s.license = 'GPLv3'
