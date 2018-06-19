@@ -34,7 +34,7 @@ class MonitoringResult < ApplicationRecord
 
       if created.persisted?
         logger.info("Imported monitoring result for #{host} in #{(Time.now.utc - start_time).round(2)} seconds")
-        host.refresh_statuses
+        host.get_status(::HostStatus::MonitoringStatus).refresh!
       end
     else
       logger.debug "Skipping monitoring result import for #{host} as it is older than what we have."
