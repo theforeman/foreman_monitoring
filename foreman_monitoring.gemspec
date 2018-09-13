@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/theforeman/foreman_monitoring'
   s.summary     = 'Foreman plugin for monitoring system integration.'
   s.description = 'Foreman plugin for monitoring system integration.'
-  s.license = 'GPLv3'
+  s.license = 'GPL-3.0-only'
 
   s.files = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
