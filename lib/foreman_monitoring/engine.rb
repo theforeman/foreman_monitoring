@@ -29,7 +29,7 @@ module ForemanMonitoring
 
     initializer 'foreman_monitoring.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_monitoring do
-        requires_foreman '>= 1.18'
+        requires_foreman '>= 1.21'
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 
@@ -52,7 +52,7 @@ module ForemanMonitoring
 
         register_custom_status HostStatus::MonitoringStatus
 
-        add_controller_action_scope(HostsController, :index) { |base_scope| base_scope.includes(:monitoring_results) }
+        add_controller_action_scope('HostsController', :index) { |base_scope| base_scope.includes(:monitoring_results) }
 
         monitoring_proxy_options = {
           :feature => 'Monitoring',
@@ -65,7 +65,7 @@ module ForemanMonitoring
         smart_proxy_for Host::Managed, :monitoring_proxy, monitoring_proxy_options
         smart_proxy_for Hostgroup, :monitoring_proxy, monitoring_proxy_options
 
-        add_controller_action_scope(HostsController, :index) { |base_scope| base_scope.includes(:monitoring_proxy) }
+        add_controller_action_scope('HostsController', :index) { |base_scope| base_scope.includes(:monitoring_proxy) }
       end
     end
 
