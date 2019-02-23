@@ -28,6 +28,7 @@ module ForemanMonitoring
 
     def downtime_host(options)
       return unless monitored?
+
       begin
         monitoring.set_downtime_host(self, options)
       rescue ProxyAPI::ProxyException => e

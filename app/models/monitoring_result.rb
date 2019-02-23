@@ -46,6 +46,7 @@ class MonitoringResult < ApplicationRecord
   def status
     return :ok if downtime
     return :warning if acknowledged
+
     result.to_sym
   end
 

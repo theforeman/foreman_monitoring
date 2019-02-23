@@ -14,6 +14,7 @@ module HostStatus
       grouped_results.each_key do |resultset|
         result, downtime, acknowledged = resultset
         next if downtime
+
         result = map_result_to_status(result)
         result = WARNING if acknowledged || result == UNKNOWN
         state = result if result > state
@@ -23,6 +24,7 @@ module HostStatus
 
     def to_global(_options = {})
       return HostStatus::Global::OK unless should_affect_global_status?
+
       case status
       when OK
         HostStatus::Global::OK
@@ -74,6 +76,7 @@ module HostStatus
 
     def map_result_to_status(result)
       return result if Rails::VERSION::MAJOR < 5
+
       case result.to_sym
       when :ok
         OK

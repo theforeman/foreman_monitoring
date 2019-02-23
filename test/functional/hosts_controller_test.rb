@@ -196,7 +196,7 @@ class HostsControllerExtensionsTest < ActionController::TestCase
 
     test 'should change the proxy' do
       hosts.each do |host|
-        refute_equal monitoring_proxy, host.monitoring_proxy
+        assert_not_equal monitoring_proxy, host.monitoring_proxy
       end
 
       params = {

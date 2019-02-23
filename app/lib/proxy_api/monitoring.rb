@@ -31,6 +31,7 @@ module ProxyAPI
 
     def delete_host(host)
       raise Foreman::Exception, 'Missing hostname.' if host.blank?
+
       parse(delete("host/#{host}"))
     rescue RestClient::ResourceNotFound
       true

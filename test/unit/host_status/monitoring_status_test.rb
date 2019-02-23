@@ -61,7 +61,7 @@ class MonitoringStatusTest < ActiveSupport::TestCase
       assert status.relevant?
 
       host.build = true
-      refute status.relevant?
+      assert_not status.relevant?
     end
 
     test '#host_known_in_monitoring? should be true' do
@@ -76,10 +76,10 @@ class MonitoringStatusTest < ActiveSupport::TestCase
   context 'status with host without monitoring results' do
     test '#relevant? is always false when build changes' do
       host.build = false
-      refute status.relevant?
+      assert_not status.relevant?
 
       host.build = true
-      refute status.relevant?
+      assert_not status.relevant?
     end
 
     test '#refresh! refreshes the date and persists the record' do
@@ -90,7 +90,7 @@ class MonitoringStatusTest < ActiveSupport::TestCase
     end
 
     test '#host_known_in_monitoring? should be false' do
-      refute status.host_known_in_monitoring?
+      assert_not status.host_known_in_monitoring?
     end
   end
 end
