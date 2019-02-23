@@ -18,13 +18,12 @@ module ForemanMonitoring
 
     initializer 'foreman_monitoring.load_default_settings',
                 :before => :load_config_initializers do |_app|
-      if begin
-        Setting.table_exists?
-      rescue StandardError
-        false
-      end
-        require_dependency File.expand_path('../../app/models/setting/monitoring.rb', __dir__)
-      end
+      setting_table_exists = begin
+                               Setting.table_exists?
+                             rescue StandardError
+                               false
+                             end
+      require_dependency File.expand_path('../../app/models/setting/monitoring.rb', __dir__) if setting_table_exists
     end
 
     initializer 'foreman_monitoring.register_plugin', :before => :finisher_hook do |_app|

@@ -49,6 +49,7 @@ class Monitoring
   def query_host(host)
     result = proxy_api.query_host(host.name)
     return {} unless result
+
     {
       :attrs => result
     }
