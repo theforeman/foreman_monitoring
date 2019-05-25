@@ -4,27 +4,27 @@ FactoryBot.define do
     result { rand(0..3) }
 
     trait :ok do
-      result 0
+      result { 0 }
     end
 
     trait :warning do
-      result 1
+      result { 1 }
     end
 
     trait :critical do
-      result 2
+      result { 2 }
     end
 
     trait :unknown do
-      result 3
+      result { 3 }
     end
 
     trait :downtime do
-      downtime true
+      downtime { true }
     end
 
     trait :acknowledged do
-      acknowledged true
+      acknowledged { true }
     end
   end
 end
