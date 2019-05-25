@@ -8,7 +8,7 @@ FactoryBot.modify do
 
     trait :with_monitoring_results do
       transient do
-        monitoring_result_count 20
+        monitoring_result_count { 20 }
       end
       after(:create) do |host, evaluator|
         evaluator.monitoring_result_count.times do
