@@ -18,7 +18,7 @@ module Orchestration::Monitoring
   def queue_monitoring_create
     return true unless ::Monitoring.create_action?(:create)
 
-    queue.create(:name   => _('Create monitoring object for %s') % self, :priority => 20,
+    queue.create(:name => _('Create monitoring object for %s') % self, :priority => 20,
                  :action => [self, :setMonitoring])
   end
 
@@ -28,7 +28,7 @@ module Orchestration::Monitoring
     Rails.logger.debug('Detected a change to the monitoring object is required.')
     return unless ::Monitoring.create_action?(:create)
 
-    queue.create(:name   => _('Monitoring update for %s') % old, :priority => 2,
+    queue.create(:name => _('Monitoring update for %s') % old, :priority => 2,
                  :action => [self, :setMonitoringUpdate])
   end
 
@@ -36,12 +36,12 @@ module Orchestration::Monitoring
     return unless monitored? && errors.empty?
 
     if ::Monitoring.delete_action?(:delete)
-      queue.create(:name   => _('Removing monitoring object for %s') % self, :priority => 2,
+      queue.create(:name => _('Removing monitoring object for %s') % self, :priority => 2,
                    :action => [self, :delMonitoring])
     end
     return unless ::Monitoring.delete_action?(:downtime)
 
-    queue.create(:name   => _('Set monitoring downtime for %s') % self, :priority => 2,
+    queue.create(:name => _('Set monitoring downtime for %s') % self, :priority => 2,
                  :action => [self, :setMonitoringDowntime])
   end
 

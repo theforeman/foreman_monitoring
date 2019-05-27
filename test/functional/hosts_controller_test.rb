@@ -22,9 +22,9 @@ class HostsControllerExtensionsTest < ActionController::TestCase
           params: {
             :id => @host.name,
             :downtime => {
-              :comment   => 'Maintenance work.',
+              :comment => 'Maintenance work.',
               :starttime => Time.current,
-              :endtime   => Time.current.advance(:hours => 2)
+              :endtime => Time.current.advance(:hours => 2)
             }
           },
           session: set_session_user
@@ -58,9 +58,9 @@ class HostsControllerExtensionsTest < ActionController::TestCase
           params: {
             :id => @host.name,
             :downtime => {
-              :comment   => 'Maintenance work.',
+              :comment => 'Maintenance work.',
               :starttime => 'invalid',
-              :endtime   => 'invalid'
+              :endtime => 'invalid'
             }
           },
           session: set_session_user
@@ -78,9 +78,9 @@ class HostsControllerExtensionsTest < ActionController::TestCase
           params: {
             :id => @host.name,
             :downtime => {
-              :comment   => 'Maintenance work.',
+              :comment => 'Maintenance work.',
               :starttime => '2017-04-20T10:15',
-              :endtime   => '2017-04-20T12:15'
+              :endtime => '2017-04-20T12:15'
             }
           },
           session: set_session_user

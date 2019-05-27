@@ -16,10 +16,10 @@ module ForemanMonitoring
                                                                            :anchor => 'set_host_downtime'),
                                      :class => 'btn btn-default',
                                      :disabled => !host.monitored?,
-                                     :title    => _('Set a downtime for this host'),
-                                     :id       => 'host-downtime',
-                                     :data     => { :toggle => 'modal',
-                                                    :target => '#set_host_downtime' })
+                                     :title => _('Set a downtime for this host'),
+                                     :id => 'host-downtime',
+                                     :data => { :toggle => 'modal',
+                                                :target => '#set_host_downtime' })
         )
       )
       super
