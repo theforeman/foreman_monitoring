@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :monitoring_result do
     sequence(:service) { |n| "Service #{n}" }

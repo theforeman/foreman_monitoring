@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Monitoring
   CREATE_ACTIONS = {
     'none' => _('None'),

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MonitoringResult < ApplicationRecord
   enum :result => %i[ok warning critical unknown]
 
