@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ForemanMonitoring
   module HostsControllerExtensions
     def self.prepended(base)
@@ -38,9 +40,9 @@ module ForemanMonitoring
             failed_hosts[host.name] = error_message
             logger.error "Failed to set a host downtime for #{host}: #{error_message}"
           end
-        rescue StandardError => error
-          failed_hosts[host.name] = error
-          Foreman::Logging.exception(_('Failed to set a host downtime for %s.') % host, error)
+        rescue StandardError => e
+          failed_hosts[host.name] = e
+          Foreman::Logging.exception(_('Failed to set a host downtime for %s.') % host, e)
         end
       end
 

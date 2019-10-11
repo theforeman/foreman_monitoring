@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ForemanMonitoring
   module HostExtensions
     def self.prepended(base)

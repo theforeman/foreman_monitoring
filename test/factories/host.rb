@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.modify do
   factory :host do
     trait :with_monitoring do

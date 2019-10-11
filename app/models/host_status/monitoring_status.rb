@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HostStatus
   class MonitoringStatus < HostStatus::Status
     OK = 0

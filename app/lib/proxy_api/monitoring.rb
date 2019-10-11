@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProxyAPI
   class Monitoring < ProxyAPI::Resource
     def initialize(args)

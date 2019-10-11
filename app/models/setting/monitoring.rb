@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Setting
   class Monitoring < ::Setting
     def self.default_settings
