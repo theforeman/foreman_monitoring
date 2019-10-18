@@ -130,7 +130,7 @@ module ForemanMonitoring
     def action_permission
       case params[:action]
       when 'downtime', 'select_multiple_downtime', 'update_multiple_downtime'
-        :downtime
+        :manage_downtime
       when 'select_multiple_monitoring_proxy', 'update_multiple_monitoring_proxy'
         :edit
       else
