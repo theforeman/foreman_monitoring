@@ -14,7 +14,7 @@ module ForemanMonitoring
         button_group(
           display_link_if_authorized(_('Downtime'),
                                      hash_for_host_path(:id => host).merge(:auth_object => host,
-                                                                           :permission => :manage_host_downtimes,
+                                                                           :permission => :manage_downtime_hosts,
                                                                            :anchor => 'set_host_downtime'),
                                      :class => 'btn btn-default',
                                      :disabled => !host.monitored?,

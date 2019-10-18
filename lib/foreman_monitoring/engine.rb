@@ -38,18 +38,21 @@ module ForemanMonitoring
           permission :view_monitoring_results,
                      {},
                      :resource_type => 'Host'
-          permission :manage_host_downtimes,
+          permission :manage_downtime_hosts,
                      { :hosts => [:downtime, :select_multiple_downtime, :update_multiple_downtime], :'api/v2/downtime' => [:create] },
                      :resource_type => 'Host'
           permission :upload_monitoring_results,
                      :'api/v2/monitoring_results' => [:create]
-          permission :edit_hosts,
-                     { :hosts => [:select_multiple_monitoring_proxy, :update_multiple_monitoring_proxy] },
-                     :resource_type => 'Host'
         end
 
+        # Extend built in permissions
+        Foreman::AccessControl.permission(:edit_hosts).actions.concat [
+          'hosts/select_multiple_monitoring_proxy',
+          'hosts/update_multiple_monitoring_proxy'
+        ]
+
         role 'Monitoring viewer', [:view_monitoring_results]
-        role 'Monitoring manager', [:view_monitoring_results, :manage_host_downtimes]
+        role 'Monitoring manager', [:view_monitoring_results, :manage_downtime_hosts]
 
         register_custom_status HostStatus::MonitoringStatus
 
