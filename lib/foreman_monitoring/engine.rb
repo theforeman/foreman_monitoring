@@ -75,10 +75,10 @@ module ForemanMonitoring
 
     config.to_prepare do
       begin
-        ::Host::Managed.send(:prepend, ForemanMonitoring::HostExtensions)
-        ::Hostgroup.send(:include, ForemanMonitoring::HostgroupExtensions)
-        ::HostsHelper.send(:prepend, ForemanMonitoring::HostsHelperExt)
-        ::HostsController.send(:prepend, ForemanMonitoring::HostsControllerExtensions)
+        ::Host::Managed.prepend(ForemanMonitoring::HostExtensions)
+        ::Hostgroup.include(ForemanMonitoring::HostgroupExtensions)
+        ::HostsHelper.prepend(ForemanMonitoring::HostsHelperExt)
+        ::HostsController.prepend(ForemanMonitoring::HostsControllerExtensions)
       rescue StandardError => e
         Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
       end
