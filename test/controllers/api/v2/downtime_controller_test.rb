@@ -33,6 +33,22 @@ class Api::V2::DowntimeControllerTest < ActionController::TestCase
         assert_response :success
       end
     end
+
+    context '#create with duration' do
+      test 'should create downtime with given duration' do
+        Host::Managed.any_instance.expects(:downtime_host).with { |params| params[:end_time] - params[:start_time] == 3600 }
+        put :create, params: { duration: 3600 }
+        assert_response :success
+      end
+    end
+
+    context '#create with reason' do
+      test 'should create downtime with given reason' do
+        Host::Managed.any_instance.expects(:downtime_host).with { |params| params[:comment] == 'In testing' }
+        put :create, params: { reason: 'In testing' }
+        assert_response :success
+      end
+    end
   end
 
   context 'without any credentials' do
