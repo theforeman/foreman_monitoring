@@ -20,7 +20,7 @@ module Api
           }
           if downtime_params.key? :duration
             options[:start_time] = Time.now.to_i
-            options[:end_time] = Time.now.to_i + downtime_params[:duration]
+            options[:end_time] = Time.now.to_i + downtime_params[:duration].to_i
           end
           @host.downtime_host(options)
         rescue StandardError => e
