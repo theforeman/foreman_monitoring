@@ -40,6 +40,12 @@ class Api::V2::DowntimeControllerTest < ActionController::TestCase
         put :create, params: { duration: 3600 }
         assert_response :success
       end
+
+      test 'should create downtime with given duration as string' do
+        Host::Managed.any_instance.expects(:downtime_host).with { |params| params[:end_time] - params[:start_time] == 3600 }
+        put :create, params: { duration: '3600' }
+        assert_response :success
+      end
     end
 
     context '#create with reason' do
