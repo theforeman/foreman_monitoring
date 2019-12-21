@@ -62,7 +62,7 @@ module ForemanMonitoring
         :architecture => architecture.try(:name),
         :os => operatingsystem.try(:to_label),
         :osfamily => operatingsystem.try(:family),
-        :virtual => provider != 'BareMetal',
+        :virtual => virtual.presence || provider != 'BareMetal',
         :provider => provider,
         :compute_resource => compute_resource.try(:to_label),
         :hostgroup => hostgroup.try(:to_label),
