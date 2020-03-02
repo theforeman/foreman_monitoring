@@ -51,8 +51,8 @@ module ForemanMonitoring
           'hosts/update_multiple_monitoring_proxy'
         ]
 
-        role 'Monitoring viewer', [:view_monitoring_results]
-        role 'Monitoring manager', [:view_monitoring_results, :manage_downtime_hosts]
+        role 'Monitoring viewer', [:view_monitoring_results], 'Role granting permissions to view monitor results'
+        role 'Monitoring manager', [:view_monitoring_results, :manage_downtime_hosts], 'Role granting permissions to view monitor results and manage downtimes'
 
         register_custom_status HostStatus::MonitoringStatus
 
