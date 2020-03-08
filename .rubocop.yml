@@ -50,7 +50,7 @@ Style/HashSyntax:
     - ruby19
     - hash_rockets
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 190
 
 Metrics/ModuleLength:
