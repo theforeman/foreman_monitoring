@@ -48,17 +48,11 @@ module ForemanMonitoring
     end
 
     def get_client_cert_hostname
-      verify = request.env[Setting[:ssl_client_verify_env]]
-      unless verify == 'SUCCESS'
-        logger.info { "Client certificate is invalid: #{verify}" }
-        return
-      end
+      client_certificate = Foreman::ClientCertificate.new(request: request)
+      return unless client_certificate.verified?
 
-      dn = request.env[Setting[:ssl_client_dn_env]]
-      return unless dn && dn =~ %r{CN=([^\s\/,]+)}i
-
-      hostname = Regexp.last_match(1).downcase
-      logger.debug "Extracted hostname '#{hostname}' from client certificate."
+      hostname = client_certificate.subject
+      logger.debug "Extracted hostname '#{hostname}' from client certificate." if hostname
       hostname
     end
   end
