@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMonitoringProxyIdToHostAndHostgroup < ActiveRecord::Migration[4.2]
   def self.up
     add_column :hosts, :monitoring_proxy_id, :integer

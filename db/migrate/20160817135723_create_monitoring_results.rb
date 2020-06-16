@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMonitoringResults < ActiveRecord::Migration[4.2]
   def change
     # rubocop:disable Rails/CreateTableWithTimestamps

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('lib/foreman_monitoring/version', __dir__)
 
 Gem::Specification.new do |s|
@@ -15,5 +17,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rubocop', '~> 0.80.0'
+  s.add_development_dependency 'rubocop-minitest'
+  s.add_development_dependency 'rubocop-performance'
+  s.add_development_dependency 'rubocop-rails'
   s.add_dependency 'deface', '< 2.0'
 end
