@@ -12,7 +12,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.3
+          ruby-version: 2.6
       - name: Setup
         run: |
           gem install bundler
@@ -30,16 +30,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        foreman-core-branch: [1.21-stable, 1.22-stable, 1.23-stable, 1.24-stable, 2.0-stable, 2.1-stable, develop]
-        ruby-version: [2.3, 2.5, 2.6]
+        foreman-core-branch: [2.0-stable, 2.1-stable, develop]
+        ruby-version: [2.5, 2.6]
         node-version: [10]
-        exclude:
-          - foreman-core-branch: 2.0-stable
-            ruby-version: 2.3
-          - foreman-core-branch: 2.1-stable
-            ruby-version: 2.3
-          - foreman-core-branch: develop
-            ruby-version: 2.3
     steps:
       - name: Install dependencies
         run: |
@@ -63,7 +56,7 @@ jobs:
       - name: Setup Plugin
         run: |
           gem install bundler
-          bundle config set without journald development console mysql2 sqlite
+          bundle config set without journald development console sqlite
           bundle install --jobs=3 --retry=3
           bundle exec rake db:create
           bundle exec rake db:migrate
