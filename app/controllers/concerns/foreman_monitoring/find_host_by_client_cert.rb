@@ -7,6 +7,7 @@ module ForemanMonitoring
     module ClassMethods
       def authorize_host_by_client_cert(actions, _options = {})
         skip_before_action :require_login, :only => actions, :raise => false
+        skip_before_action :check_user_enabled, :only => actions, :raise => false
         skip_before_action :authorize, :only => actions
         skip_before_action :verify_authenticity_token, :only => actions
         skip_before_action :set_taxonomy, :only => actions, :raise => false
