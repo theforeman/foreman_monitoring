@@ -10,6 +10,7 @@ module Api
       before_action :find_host, :only => [:create]
 
       api :POST, '/downtime', N_('Schedule host downtime')
+      param :all_services, [true, false], :desc => N_('Set downtime for all services'), :required => false
       param :duration, :number, :desc => N_('Downtime duration (seconds)'), :required => false
       param :reason, String, :desc => N_('Downtime reason'), :required => false
 
@@ -18,6 +19,7 @@ module Api
           options = {
             :comment => downtime_params[:reason] || _('Host requested downtime')
           }
+          options[:all_services] = downtime_params[:all_services] if downtime_params.key? :all_services
           if downtime_params.key? :duration
             options[:start_time] = Time.now.to_i
             options[:end_time] = Time.now.to_i + downtime_params[:duration].to_i
@@ -35,7 +37,7 @@ module Api
       private
 
       def downtime_params
-        params.permit(:duration, :reason)
+        params.permit(:all_services, :duration, :reason)
       end
 
       def find_host
