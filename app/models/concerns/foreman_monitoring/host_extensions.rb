@@ -56,7 +56,7 @@ module ForemanMonitoring
     end
 
     def monitoring_attributes
-      {
+      attributes = {
         :ip => ip,
         :ip6 => ip6,
         :architecture => architecture.try(:name),
@@ -69,9 +69,12 @@ module ForemanMonitoring
         :organization => organization.try(:name),
         :location => location.try(:name),
         :comment => comment,
-        :environment => environment.try(:to_s),
         :owner_name => owner.try(:name)
       }
+
+      attributes[:environment] = environment.try(:to_s) if defined?(ForemanPuppet)
+
+      attributes
     end
 
     private
