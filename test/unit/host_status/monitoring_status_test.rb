@@ -4,7 +4,6 @@ require 'test_plugin_helper'
 
 class MonitoringStatusTest < ActiveSupport::TestCase
   setup do
-    setup_settings
     disable_monitoring_orchestration
   end
 
