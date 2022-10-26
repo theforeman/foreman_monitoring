@@ -18,19 +18,31 @@ module ForemanMonitoring
       end
     end
 
-    initializer 'foreman_monitoring.load_default_settings',
-                :before => :load_config_initializers do |_app|
-      setting_table_exists = begin
-                               Setting.table_exists?
-                             rescue StandardError
-                               false
-                             end
-      require_dependency File.expand_path('../../app/models/setting/monitoring.rb', __dir__) if setting_table_exists
-    end
-
     initializer 'foreman_monitoring.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_monitoring do
-        requires_foreman '>= 2.2'
+        requires_foreman '>= 3.0'
+
+        settings do
+          category(:monitoring, N_('Monitoring')) do
+            setting('monitoring_affect_global_status',
+                    type: :boolean,
+                    description: N_("Monitoring status will affect a host's global status when enabled"),
+                    default: true,
+                    full_name: N_('Monitoring status should affect global status'))
+            setting('monitoring_create_action',
+                    type: :string,
+                    description: N_('What action should be taken when a host is created'),
+                    default: 'create',
+                    full_name: N_('Host Create Action'),
+                    collection: ::Monitoring::CREATE_ACTIONS)
+            setting('monitoring_delete_action',
+                    type: :string,
+                    description: N_('What action should be taken when a host is deleted'),
+                    default: 'delete',
+                    full_name: N_('Host Delete Action'),
+                    collection: ::Monitoring::DELETE_ACTIONS)
+          end
+        end
 
         apipie_documented_controllers ["#{ForemanMonitoring::Engine.root}/app/controllers/api/v2/*.rb"]
 

@@ -5,7 +5,6 @@ require 'test_plugin_helper'
 class MonitoringTest < ActiveSupport::TestCase
   setup do
     User.current = FactoryBot.build(:user, :admin)
-    setup_settings
     disable_monitoring_orchestration
   end
 

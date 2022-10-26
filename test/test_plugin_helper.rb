@@ -11,10 +11,6 @@ FactoryBot.reload
 # Foreman's setup doesn't handle cleaning up for Minitest::Spec
 DatabaseCleaner.strategy = :transaction
 
-def setup_settings
-  Setting::Monitoring.load_defaults
-end
-
 def disable_monitoring_orchestration
   ProxyAPI::Monitoring.any_instance.stubs(:query_host).returns({})
 end
