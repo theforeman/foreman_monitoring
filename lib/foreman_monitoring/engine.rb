@@ -34,13 +34,13 @@ module ForemanMonitoring
                     description: N_('What action should be taken when a host is created'),
                     default: 'create',
                     full_name: N_('Host Create Action'),
-                    collection: ::Monitoring::CREATE_ACTIONS)
+                    collection: proc { ::Monitoring::CREATE_ACTIONS })
             setting('monitoring_delete_action',
                     type: :string,
                     description: N_('What action should be taken when a host is deleted'),
                     default: 'delete',
                     full_name: N_('Host Delete Action'),
-                    collection: ::Monitoring::DELETE_ACTIONS)
+                    collection: proc { ::Monitoring::DELETE_ACTIONS })
           end
         end
 
