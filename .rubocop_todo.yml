@@ -31,7 +31,7 @@ Minitest/RefuteFalse:
 # AllowedNames: io, id, to
 Naming/MethodParameterName:
   Exclude:
-    - 'app/helpers/concerns/foreman_monitoring/hosts_helper_ext.rb'
+    - 'app/helpers/foreman_monitoring/hosts_helper.rb'
 
 Style/HashEachMethods:
   Enabled: false
