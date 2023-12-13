@@ -97,7 +97,8 @@ module ForemanMonitoring
         :comment => params[:downtime][:comment],
         :author => "Foreman User #{User.current}",
         :start_time => Time.zone.parse(params[:downtime][:starttime]).to_i,
-        :end_time => Time.zone.parse(params[:downtime][:endtime]).to_i
+        :end_time => Time.zone.parse(params[:downtime][:endtime]).to_i,
+        **(params[:downtime][:all_services] == '1' ? { :all_services => true } : {})
       }
     end
 
