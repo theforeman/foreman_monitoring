@@ -1,3 +1,4 @@
 <%= text_f f, :comment, :size => "col-md-5", :label => _('Comment'), :help_inline => _('Short description that explains why the downtime was set.'), :required => true %>
 <%= monitoring_datetime_f f, :starttime, :size => "col-md-5", :label => _('Starttime'), :help_inline => _('Time when the downtime should start.'), :min => DateTime.now, :value => Time.current, :required => true %>
 <%= monitoring_datetime_f f, :endtime, :size => "col-md-5", :label => _('Endtime'), :help_inline => _('Time when the downtime should end.'), :value => Time.current.advance(:hours => 2), :required => true %>
+<%= checkbox_f f, :all_services, :size => "col-md-5", :label => _('All services'), :help_inline => _("Set downtime for all host's services.") %>
