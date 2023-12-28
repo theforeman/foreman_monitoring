@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { createElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -9,85 +9,86 @@ import {
   Grid,
   GridItem,
 } from '@patternfly/react-core';
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationTriangleIcon,
+  QuestionCircleIcon,
+} from '@patternfly/react-icons';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { STATUS } from 'foremanReact/constants';
 import { translate as __ } from 'foremanReact/common/I18n';
-import { get } from 'foremanReact/redux/API';
-import { selectAPIStatus, selectAPIResponse } from 'foremanReact/redux/API/APISelectors';
+import { useAPI } from 'foremanReact/common/hooks/API/APIHooks';
+import PermissionDenied from 'foremanReact/components/PermissionDenied';
 import Loading from 'foremanReact/components/Loading';
 import SkeletonLoader from 'foremanReact/components/common/SkeletonLoader';
 import DefaultLoaderEmptyState from 'foremanReact/components/HostDetails/DetailsCard/DefaultLoaderEmptyState';
 import CardTemplate from 'foremanReact/components/HostDetails/Templates/CardItem/CardTemplate';
 
 const STATUS_ICONS = {
-  'ok': 'pficon-ok status-ok',
-  'warning': 'pficon-info status-warn',
-  'critical': 'pficon-error-circle-o status-error',
-}
+  'ok': CheckCircleIcon,
+  'warning': ExclamationTriangleIcon,
+  'critical': ExclamationCircleIcon,
+};
 
-const status_icon_class = (result_status) => {
-  return STATUS_ICONS[result_status] || 'pficon-help status-question';
+const STATUS_STYLES = {
+  'ok': 'ok',
+  'warning': 'warn',
+  'critical': 'critical',
+};
+
+const status_icon = (result_status) => {
+  const cls = STATUS_ICONS[result_status] || QuestionCircleIcon;
+  const style = STATUS_STYLES[result_status] || 'question';
+  return createElement(cls, { className: `status-${style}` });
 };
 
 const MonitoringResults = ({ hostId }) => {
-  const dispatch = useDispatch();
-  const API_KEY = `get-monitoring-results-{hostId}`;
-  const status = useSelector(state => selectAPIStatus(state, API_KEY));
-  const { results, itemCount, response } = useSelector(state =>
-    selectAPIResponse(state, API_KEY)
-  );
+  const {
+    response,
+    status,
+  } = useAPI('get', `/api/hosts/${hostId}/monitoring/results`, `get-monitoring-results-${hostId}`);
 
-  const fetchResults = useCallback(
-    () => {
-      if (!hostId) return;
-      dispatch(
-        get({
-          key: API_KEY,
-          url: `/api/hosts/${hostId}/monitoring/results`,
-          params: {
-            per_page: 'all',
-          },
-        })
-      );
-    },
-    [API_KEY, dispatch, hostId],
-  );
-
-  useEffect(() => {
-    fetchResults();
-  }, [fetchResults]);
-
-  if (response?.status === 403) {
-    return <PermissionDenied missingPermissions={['view_monitoring_results']} />;
-  }
-
-  return (
-    <Table variant="compact" aria-label={__("Monitoring Results")}>
-      <Thead>
-        <Tr>
-          <Th>{__('Service')}</Th>
-          <Th>{__('Status')}</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        <SkeletonLoader
-          customSkeleton={<Tr><Td colSpan={2}><Loading /></Td></Tr>}
-          status={status || STATUS.PENDING}
-        >
-          {results && results.map((result) => (
-            <Tr key={`monitoring-result-${result.id}`}>
-              <Td>{result.service}</Td>
-              <Td><span className={status_icon_class(result.status)}></span> {result.status_label}</Td>
+  switch (status) {
+    case STATUS.PENDING: {
+      return <Loading />
+    }
+    case STATUS.ERROR: {
+      // In case of an error, response is an Error object
+      if (response.response?.status === 403) {
+        return <PermissionDenied missingPermissions={['view_monitoring_results']} />;
+      } else {
+        // TODO
+      }
+    }
+    case STATUS.RESOLVED: {
+      return (
+        <Table variant="compact" aria-label={__("Monitoring Results")}>
+          <Thead>
+            <Tr>
+              <Th>{__('Service')}</Th>
+              <Th>{__('Status')}</Th>
             </Tr>
-          ))}
-        </SkeletonLoader>
-      </Tbody>
-    </Table>
-  );
+          </Thead>
+          <Tbody>
+            {response?.results?.map((result) => (
+              <Tr key={`monitoring-result-${result.id}`}>
+                <Td>{result.service}</Td>
+                <Td>{status_icon(result.status)} {result.status_label}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      );
+    }
+    default: {
+      return __('N/A');
+    }
+  }
 };
 
 MonitoringResults.propTypes = {
-  hostId: PropTypes.number.isrequired,
+  hostId: PropTypes.number.isRequired,
 };
 
 const MonitoringTab = ({
@@ -109,7 +110,7 @@ const MonitoringTab = ({
                 emptyState={<DefaultLoaderEmptyState />}
                 status={status}
               >
-                {monitoringProxyId && (<a href={`/smart_proxies/${monitoringProxyId}`}>{monitoringProxyName}</a>)}
+                {monitoringProxyId && <a href={`/smart_proxies/${monitoringProxyId}`}>{monitoringProxyName}</a>}
               </SkeletonLoader>
             </DescriptionListDescription>
           </DescriptionListGroup>
@@ -121,7 +122,7 @@ const MonitoringTab = ({
         emptyState={<DefaultLoaderEmptyState />}
         status={status}
       >
-        {monitoringProxyId && hostId && (<MonitoringResults hostId={hostId} />)}
+        {hostId && monitoringProxyId && <MonitoringResults hostId={hostId} />}
       </SkeletonLoader>
     </GridItem>
   </Grid>
