@@ -43,48 +43,40 @@ const status_icon = (result_status) => {
   return createElement(cls, { className: `status-${style}` });
 };
 
+const ErrorHandler = ({ response }) => {
+  // In case of an error, response is an Error object
+  if (response.response?.status === 403) {
+    return <PermissionDenied missingPermissions={['view_monitoring_results']} />;
+  }
+  // TODO
+}
+
 const MonitoringResults = ({ hostId }) => {
   const {
     response,
     status,
   } = useAPI('get', `/api/hosts/${hostId}/monitoring/results`, `get-monitoring-results-${hostId}`);
 
-  switch (status) {
-    case STATUS.PENDING: {
-      return <Loading />
-    }
-    case STATUS.ERROR: {
-      // In case of an error, response is an Error object
-      if (response.response?.status === 403) {
-        return <PermissionDenied missingPermissions={['view_monitoring_results']} />;
-      } else {
-        // TODO
-      }
-    }
-    case STATUS.RESOLVED: {
-      return (
-        <Table variant="compact" aria-label={__("Monitoring Results")}>
-          <Thead>
-            <Tr>
-              <Th>{__('Service')}</Th>
-              <Th>{__('Status')}</Th>
+  return (
+    <SkeletonLoader status={status} customSkeleton=<Loading /> errorNode=<ErrorHandler response={response} />>
+      <Table variant="compact" aria-label={__("Monitoring Results")}>
+        <Thead>
+          <Tr>
+            <Th>{__('Service')}</Th>
+            <Th>{__('Status')}</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {response?.results?.map((result) => (
+            <Tr key={`monitoring-result-${result.id}`}>
+              <Td>{result.service}</Td>
+              <Td>{status_icon(result.status)} {result.status_label}</Td>
             </Tr>
-          </Thead>
-          <Tbody>
-            {response?.results?.map((result) => (
-              <Tr key={`monitoring-result-${result.id}`}>
-                <Td>{result.service}</Td>
-                <Td>{status_icon(result.status)} {result.status_label}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      );
-    }
-    default: {
-      return __('N/A');
-    }
-  }
+          ))}
+        </Tbody>
+      </Table>
+    </SkeletonLoader>
+  );
 };
 
 MonitoringResults.propTypes = {
