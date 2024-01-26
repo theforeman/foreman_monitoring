@@ -11,6 +11,7 @@ AllCops:
   Exclude:
     - 'Rakefile'
     - 'doc/plugins/**'
+    - 'vendor/**/*'
 
 Rails:
   Enabled: true
