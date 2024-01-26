@@ -17,4 +17,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rdoc'
   s.add_dependency 'deface', '< 2.0'
+
+  s.required_ruby_version = '>= 2.7', '< 4'
 end
