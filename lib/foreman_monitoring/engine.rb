@@ -86,14 +86,12 @@ module ForemanMonitoring
     end
 
     config.to_prepare do
-      begin
-        ::Host::Managed.prepend(ForemanMonitoring::HostExtensions)
-        ::Hostgroup.include(ForemanMonitoring::HostgroupExtensions)
-        ::HostsHelper.prepend(ForemanMonitoring::HostsHelperExt)
-        ::HostsController.prepend(ForemanMonitoring::HostsControllerExtensions)
-      rescue StandardError => e
-        Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
-      end
+      ::Host::Managed.prepend(ForemanMonitoring::HostExtensions)
+      ::Hostgroup.include(ForemanMonitoring::HostgroupExtensions)
+      ::HostsHelper.prepend(ForemanMonitoring::HostsHelperExt)
+      ::HostsController.prepend(ForemanMonitoring::HostsControllerExtensions)
+    rescue StandardError => e
+      Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
     end
 
     initializer 'foreman_monitoring.register_gettext', after: :load_config_initializers do |_app|
