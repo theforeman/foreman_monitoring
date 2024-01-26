@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   scope '/monitoring' do
-    constraints(:id => %r{[^\/]+}) do
+    constraints(:id => %r{[^/]+}) do
       resources :hosts, :only => [] do
         member do
           put 'downtime'
