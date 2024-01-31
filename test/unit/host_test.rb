@@ -61,7 +61,7 @@ class HostTest < ActiveSupport::TestCase
         ProxyAPI::Monitoring.any_instance.stubs(:query_host).returns(fake_host_query_result)
         assert_valid host
         tasks = host.queue.all.map(&:name)
-        assert_equal [], tasks
+        assert_empty tasks
       end
 
       test 'should queue monitoring destroy' do
@@ -83,7 +83,7 @@ class HostTest < ActiveSupport::TestCase
       test 'should not queue monitoring create actions' do
         assert_valid host
         tasks = host.queue.all.map(&:name)
-        assert_equal [], tasks
+        assert_empty tasks
       end
 
       test 'should queue monitoring downtime on host destroy' do
@@ -134,7 +134,7 @@ class HostTest < ActiveSupport::TestCase
       host.send(:queue_monitoring)
       host.send(:queue_monitoring_destroy)
       tasks = host.queue.all.map(&:name)
-      assert_equal [], tasks
+      assert_empty tasks
     end
   end
 end
