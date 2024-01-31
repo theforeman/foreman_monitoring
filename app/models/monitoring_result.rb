@@ -30,7 +30,6 @@ class MonitoringResult < ApplicationRecord
     end
 
     created = MonitoringResult.where(:host => host, :service => result[:service]).first_or_create
-    # rubocop:disable Rails/Date
     if created.timestamp.blank? || updates[:timestamp].blank? || (created.timestamp.to_time - updates[:timestamp].to_time) < 2
       created.update(updates)
 
@@ -41,7 +40,6 @@ class MonitoringResult < ApplicationRecord
     else
       logger.debug "Skipping monitoring result import for #{host} as it is older than what we have."
     end
-    # rubocop:enable Rails/Date
   end
   # rubocop:enable Metrics/AbcSize
 
