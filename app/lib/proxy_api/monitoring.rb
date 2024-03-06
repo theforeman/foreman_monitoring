@@ -3,7 +3,7 @@
 module ProxyAPI
   class Monitoring < ProxyAPI::Resource
     def initialize(args)
-      @url = args[:url] + '/monitoring'
+      @url = "#{args[:url]}/monitoring"
       super args
     end
 
