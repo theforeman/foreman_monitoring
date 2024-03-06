@@ -1,24 +1,15 @@
-require:
-  - rubocop-performance
-  - rubocop-rails
-
 inherit_from:
   - .rubocop_todo.yml
 
+inherit_gem:
+  theforeman-rubocop:
+    - default.yml
+
 AllCops:
-  TargetRubyVersion: '2.7'
-  TargetRailsVersion: '6.1'
   Exclude:
-    - 'Rakefile'
-    - 'doc/plugins/**'
-    - 'vendor/**/*'
-
-Rails:
-  Enabled: true
-
-# Don't enforce documentation
-Style/Documentation:
-  Enabled: false
+    - "Rakefile"
+    - "doc/plugins/**"
+    - "vendor/**/*"
 
 Metrics/MethodLength:
   Enabled: false
@@ -31,7 +22,7 @@ Style/RedundantSelf:
 
 Naming/FileName:
   Exclude:
-      - 'db/seeds.d/*'
+    - "db/seeds.d/*"
 
 Style/WordArray:
   Enabled: false
@@ -63,21 +54,21 @@ Metrics/ModuleLength:
 
 Metrics/ClassLength:
   Exclude:
-    - 'lib/**/engine.rb'
-    - 'test/**/*'
+    - "lib/**/engine.rb"
+    - "test/**/*"
 
 Performance/FixedSize:
   Exclude:
-    - 'test/**/*'
+    - "test/**/*"
 
 Metrics/BlockLength:
   Exclude:
-    - 'lib/**/engine.rb'
-    - 'test/**/*'
+    - "lib/**/engine.rb"
+    - "test/**/*"
 
 Naming/MethodName:
   Exclude:
-    - 'app/models/concerns/orchestration/monitoring.rb'
+    - "app/models/concerns/orchestration/monitoring.rb"
 
 Style/SymbolArray:
   Enabled: false
