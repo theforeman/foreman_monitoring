@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class MonitoringResult < ApplicationRecord
+  include Authorizable
+
   enum :result => { :ok => 0, :warning => 1, :critical => 2, :unknown => 3 }
 
   belongs_to_host
