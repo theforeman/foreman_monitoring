@@ -22,6 +22,8 @@ module ForemanMonitoring
       Foreman::Plugin.register :foreman_monitoring do
         requires_foreman '>= 3.0'
 
+        register_global_js_file 'fills'
+
         settings do
           category(:monitoring, N_('Monitoring')) do
             setting('monitoring_affect_global_status',
