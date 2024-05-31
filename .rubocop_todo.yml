@@ -62,7 +62,7 @@ Minitest/RefuteFalse:
 # AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
 Naming/MethodParameterName:
   Exclude:
-    - 'app/helpers/concerns/foreman_monitoring/hosts_helper_ext.rb'
+    - 'app/helpers/foreman_monitoring/hosts_helper.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.

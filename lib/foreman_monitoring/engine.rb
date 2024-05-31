@@ -82,13 +82,16 @@ module ForemanMonitoring
         smart_proxy_for Hostgroup, :monitoring_proxy, monitoring_proxy_options
 
         add_controller_action_scope('HostsController', :index) { |base_scope| base_scope.includes(:monitoring_proxy) }
+
+        describe_host do
+          multiple_actions_provider :monitoring_hosts_multiple_actions
+        end
       end
     end
 
     config.to_prepare do
       ::Host::Managed.prepend(ForemanMonitoring::HostExtensions)
       ::Hostgroup.include(ForemanMonitoring::HostgroupExtensions)
-      ::HostsHelper.prepend(ForemanMonitoring::HostsHelperExt)
       ::HostsController.prepend(ForemanMonitoring::HostsControllerExtensions)
     rescue StandardError => e
       Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
