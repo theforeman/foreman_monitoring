@@ -2,6 +2,10 @@
 
 module ForemanMonitoring
   module HostExtensions
+    included do
+      scoped_search :relation => :monitoring_proxy, :on => :name, :complete_value => true, :rename => :monitoring_proxy, :only_explicit => true
+    end
+
     def self.prepended(base)
       base.class_eval do
         include Orchestration::Monitoring
