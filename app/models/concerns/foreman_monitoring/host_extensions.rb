@@ -9,6 +9,8 @@ module ForemanMonitoring
         after_build :downtime_host_build
 
         has_many :monitoring_results, :dependent => :destroy, :foreign_key => 'host_id', :inverse_of => :host
+
+        scoped_search :relation => :monitoring_proxy, :on => :name, :complete_value => true, :rename => :monitoring_proxy, :only_explicit => true
       end
     end
 
