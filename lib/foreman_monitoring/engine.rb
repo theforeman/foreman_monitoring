@@ -62,7 +62,7 @@ module ForemanMonitoring
           role 'Monitoring viewer', [:view_monitoring_results], 'Role granting permissions to view monitor results'
           role 'Monitoring manager', [:view_monitoring_results, :manage_downtime_hosts], 'Role granting permissions to view monitor results and manage downtimes'
 
-          register_custom_status HostStatus::MonitoringStatus
+          register_custom_status ::HostStatus::MonitoringStatus
 
           add_controller_action_scope('HostsController', :index) { |base_scope| base_scope.includes(:monitoring_results) }
 
@@ -74,8 +74,8 @@ module ForemanMonitoring
           }
 
           # add monitoring smart proxy to hosts and hostgroups
-          smart_proxy_for Host::Managed, :monitoring_proxy, monitoring_proxy_options
-          smart_proxy_for Hostgroup, :monitoring_proxy, monitoring_proxy_options
+          smart_proxy_for ::Host::Managed, :monitoring_proxy, monitoring_proxy_options
+          smart_proxy_for ::Hostgroup, :monitoring_proxy, monitoring_proxy_options
 
           add_controller_action_scope('HostsController', :index) { |base_scope| base_scope.includes(:monitoring_proxy) }
 
