@@ -13,6 +13,17 @@ class HostsControllerExtensionsTest < ActionController::TestCase
     @host = FactoryBot.create(:host, :managed)
   end
 
+  test 'lists hosts without a monitoring proxy when filtering by subnet' do
+    host = FactoryBot.create(:host, :managed, :with_subnet)
+
+    get :index,
+        params: { :search => %(subnet.name = "#{host.subnet.name}") },
+        session: set_session_user
+
+    assert_response :success
+    assert_includes response.body, host.name
+  end
+
   context 'when setting a host downtime' do
     setup do
       @request.env['HTTP_REFERER'] = host_path(:id => @host)
