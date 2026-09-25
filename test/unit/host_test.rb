@@ -13,12 +13,24 @@ class HostTest < ActiveSupport::TestCase
     let(:host) { FactoryBot.create(:host, :managed) }
 
     test 'it should set a downtime when build status changes' do
-      host.expects(:downtime_host).once
+      host.expects(:downtime_host).with(
+        { :comment => 'Host rebuilt in Foreman' },
+        :fail_on_error => false
+      ).once
 
       host.build = false
       assert host.save
       host.build = true
       assert host.save
+    end
+
+    test 'downtime failure should not prevent a rebuild' do
+      host = FactoryBot.build(:host, :managed, :with_monitoring)
+      exception = ProxyAPI::ProxyException.new('https://proxy.example.com', StandardError.new('unavailable'), 'Unable to set downtime')
+      Monitoring.any_instance.expects(:set_downtime_host).raises(exception)
+
+      assert host.downtime_host_build
+      assert_empty host.errors
     end
   end
 
