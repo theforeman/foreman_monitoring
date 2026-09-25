@@ -27,16 +27,20 @@ module ForemanMonitoring
     end
 
     def downtime_host_build
-      downtime_host(:comment => _('Host rebuilt in Foreman'))
+      downtime_host({ :comment => _('Host rebuilt in Foreman') }, :fail_on_error => false)
     end
 
-    def downtime_host(options)
+    def downtime_host(options, fail_on_error: true)
       return unless monitored?
 
       begin
         monitoring.set_downtime_host(self, options)
       rescue ProxyAPI::ProxyException => e
-        errors.add(:base, _("Error setting downtime: '%s'") % e.message)
+        if fail_on_error
+          errors.add(:base, _("Error setting downtime: '%s'") % e.message)
+        else
+          Foreman::Logging.exception(_('Failed to set monitoring downtime during host rebuild'), e)
+        end
       end
       errors.empty?
     end
