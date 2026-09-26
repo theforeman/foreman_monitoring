@@ -25,6 +25,20 @@ class HostTest < ActiveSupport::TestCase
   context 'a host with monitoring orchestration' do
     let(:host) { FactoryBot.build(:host, :managed, :with_monitoring) }
 
+    context 'with a default host template' do
+      test 'includes the configured template in monitoring attributes' do
+        Setting[:monitoring_default_template] = 'custom-host-template'
+
+        assert_equal ['custom-host-template'], host.monitoring_attributes[:templates]
+      end
+
+      test 'lets the monitoring provider use its default when unset' do
+        Setting[:monitoring_default_template] = ''
+
+        assert_not_includes host.monitoring_attributes, :templates
+      end
+    end
+
     context 'with create/delete actions' do
       setup do
         Setting[:monitoring_create_action] = 'create'

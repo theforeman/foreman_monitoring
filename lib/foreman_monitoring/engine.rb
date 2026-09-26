@@ -37,6 +37,11 @@ module ForemanMonitoring
                       default: 'delete',
                       full_name: N_('Host Delete Action'),
                       collection: proc { ::Monitoring::DELETE_ACTIONS })
+              setting('monitoring_default_template',
+                      type: :string,
+                      description: N_('Host template sent to the monitoring proxy. Leave blank to use the provider default'),
+                      default: '',
+                      full_name: N_('Default Host Template'))
             end
           end
 

@@ -52,6 +52,9 @@ object or take no action while de-provisoning allows deleting the monitoring
 object, set a downtime or take no action. For rebuild, it will by default
 set a downtime.
 
+The default host template can be configured in the Monitoring settings. When
+left blank, the monitoring provider uses its own default template.
+
 The plugin will show you the monitoring status as a sub-status and a detail
 panel. You can configure if the sub-status should affect the global status.
 
