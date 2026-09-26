@@ -45,6 +45,25 @@ module ForemanMonitoring
       monitoring_proxy.present?
     end
 
+    def monitoring_interface
+      get_interface_by_flag(:monitoring) || primary_interface
+    end
+
+    def drop_monitoring_interface_cache
+      @monitoring_interface = nil
+    end
+
+    def becomes(*args)
+      became = super(*args)
+      became.drop_monitoring_interface_cache if became.respond_to?(:drop_monitoring_interface_cache)
+      became
+    end
+
+    def reload(*args)
+      drop_monitoring_interface_cache
+      super(*args)
+    end
+
     def hostgroup_inherited_attributes
       super + ['monitoring_proxy_id']
     end
@@ -58,9 +77,10 @@ module ForemanMonitoring
     end
 
     def monitoring_attributes
+      interface = monitoring_interface
       attributes = {
-        :ip => ip,
-        :ip6 => ip6,
+        :ip => interface.try(:ip),
+        :ip6 => interface.try(:ip6),
         :architecture => architecture.try(:name),
         :os => operatingsystem.try(:to_label),
         :osfamily => operatingsystem.try(:family),
@@ -80,6 +100,11 @@ module ForemanMonitoring
     end
 
     private
+
+    def build_required_interfaces(attrs = {})
+      super
+      primary_interface.monitoring = true if get_interface_by_flag(:monitoring).nil?
+    end
 
     def monitoring
       Monitoring.new(:monitoring_proxy => monitoring_proxy)
