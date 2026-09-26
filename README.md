@@ -46,6 +46,10 @@ For managing a host in the monitoring solution a Smart Proxy providing
 the `monitoring` feature has to be assigned. This can be done during
 provisioning or as a bulk action from the host overview.
 
+By default, the primary interface provides the IP addresses sent to the
+monitoring system. A different interface can be selected as the monitoring
+interface in the host's interface settings.
+
 You can configure the default action which will be done during host
 provisioning and de-provisioning. Provisioning allows to create a monitoring
 object or take no action while de-provisoning allows deleting the monitoring

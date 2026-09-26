@@ -77,6 +77,12 @@ module ForemanMonitoring
           smart_proxy_for Host::Managed, :monitoring_proxy, monitoring_proxy_options
           smart_proxy_for Hostgroup, :monitoring_proxy, monitoring_proxy_options
 
+          parameter_filter Nic::Interface do |ctx|
+            ctx.permit :monitoring
+          end
+
+          extend_rabl_template 'api/v2/interfaces/main', 'api/v2/interfaces/monitoring_flag'
+
           add_controller_action_scope('HostsController', :index) { |base_scope| base_scope.includes(:monitoring_proxy) }
 
           describe_host do
@@ -89,6 +95,10 @@ module ForemanMonitoring
     config.to_prepare do
       ::Host::Managed.prepend(ForemanMonitoring::HostExtensions)
       ::Hostgroup.include(ForemanMonitoring::HostgroupExtensions)
+      (Nic::Base.descendants + [Nic::Base]).each do |klass|
+        klass.include(ForemanMonitoring::NicExtensions)
+      end
+      ::Api::V2::InterfacesController.include(ForemanMonitoring::Api::V2::InterfacesControllerExtensions)
       ::HostsController.prepend(ForemanMonitoring::HostsControllerExtensions)
     rescue StandardError => e
       Rails.logger.warn "ForemanMonitoring: skipping engine hook (#{e})"
@@ -98,6 +108,10 @@ module ForemanMonitoring
       locale_dir = File.join(File.expand_path('../..', __dir__), 'locale')
       locale_domain = 'foreman_monitoring'
       Foreman::Gettext::Support.add_text_domain locale_domain, locale_dir
+    end
+
+    initializer 'foreman_monitoring.assets.precompile' do |app|
+      app.config.assets.precompile += ['foreman_monitoring/monitoring_interface.js']
     end
   end
 end

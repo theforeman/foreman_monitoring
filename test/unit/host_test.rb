@@ -25,6 +25,39 @@ class HostTest < ActiveSupport::TestCase
   context 'a host with monitoring orchestration' do
     let(:host) { FactoryBot.build(:host, :managed, :with_monitoring) }
 
+    context 'monitoring interface' do
+      test 'uses the primary interface by default' do
+        assert_predicate host.primary_interface, :monitoring?
+        assert_equal host.primary_interface, host.monitoring_interface
+      end
+
+      test 'uses the selected interface addresses' do
+        monitoring_interface = FactoryBot.build(
+          :nic_managed,
+          :host => host,
+          :identifier => 'monitoring0',
+          :ip => '192.0.2.10',
+          :ip6 => '2001:db8::10',
+          :monitoring => true
+        )
+        host.interfaces << monitoring_interface
+
+        assert_valid host
+        assert_equal monitoring_interface, host.monitoring_interface
+        assert_not_predicate host.primary_interface, :monitoring?
+        assert_equal '192.0.2.10', host.monitoring_attributes[:ip]
+        assert_equal '2001:db8::10', host.monitoring_attributes[:ip6]
+      end
+
+      test 'only allows one monitoring interface' do
+        host.interfaces << FactoryBot.build(:nic_managed, :host => host, :identifier => 'monitoring0')
+        host.interfaces.each { |interface| interface.monitoring = true }
+
+        assert_valid host
+        assert_equal 1, host.interfaces.count(&:monitoring?)
+      end
+    end
+
     context 'with create/delete actions' do
       setup do
         Setting[:monitoring_create_action] = 'create'
