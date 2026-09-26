@@ -29,7 +29,8 @@ class Monitoring
   end
 
   def set_downtime_host(host, options = {})
-    proxy_api.create_host_downtime(host.name, default_downtime_options.merge(options))
+    downtime_options = default_downtime_options.merge(default_downtime_period(options)).merge(options)
+    proxy_api.create_host_downtime(host.name, downtime_options)
   end
 
   def del_downtime_host(host, options = {})
@@ -63,6 +64,16 @@ class Monitoring
     {
       :author => 'Foreman',
       :comment => 'triggered by Foreman'
+    }
+  end
+
+  def default_downtime_period(options)
+    start_time = options[:start_time] || Time.now.to_i
+    duration = Setting[:monitoring_default_downtime_duration].to_i * 60
+
+    {
+      :start_time => start_time,
+      :end_time => start_time + duration
     }
   end
 end

@@ -52,6 +52,10 @@ object or take no action while de-provisoning allows deleting the monitoring
 object, set a downtime or take no action. For rebuild, it will by default
 set a downtime.
 
+Automatic downtimes last 1,440 minutes by default. This can be changed with
+the **Default Downtime Duration (minutes)** setting in the Monitoring category.
+Periods supplied through the UI or API take precedence over this default.
+
 The plugin will show you the monitoring status as a sub-status and a detail
 panel. You can configure if the sub-status should affect the global status.
 

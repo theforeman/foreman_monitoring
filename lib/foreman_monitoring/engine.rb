@@ -37,6 +37,14 @@ module ForemanMonitoring
                       default: 'delete',
                       full_name: N_('Host Delete Action'),
                       collection: proc { ::Monitoring::DELETE_ACTIONS })
+              setting('monitoring_default_downtime_duration',
+                      type: :integer,
+                      description: N_('Duration in minutes for automatically created monitoring downtimes'),
+                      default: 1_440,
+                      full_name: N_('Default Downtime Duration (minutes)'))
+              validates('monitoring_default_downtime_duration',
+                        ->(value) { value.is_a?(Integer) && value.positive? },
+                        message: N_('must be greater than 0'))
             end
           end
 
