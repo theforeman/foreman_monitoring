@@ -75,6 +75,8 @@ module ForemanMonitoring
       }
 
       attributes[:environment] = environment.try(:to_s) if defined?(ForemanPuppet)
+      default_template = Setting[:monitoring_default_template].presence
+      attributes[:templates] = [default_template] if default_template
 
       attributes
     end
